@@ -1,1 +1,1 @@
-bash <(curl -Ls https://raw.githubusercontent.com/just2so/node/main/install.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/just2so/test/main/install.sh)
