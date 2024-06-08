@@ -1,114 +1,115 @@
 #!/bin/bash
+export LANG=en_US.UTF-8
 
-#¹¦ÄÜ£º¼à¿ØÍøÂçÁ¬½Ó×´Ì¬½Å±¾
+#åŠŸèƒ½ï¼šç›‘æŽ§ç½‘ç»œè¿žæŽ¥çŠ¶æ€è„šæœ¬
 
-TCP_Total=$(ss -s | awk '$1=="TCP"{print $2}') #ËùÓÐTCPÁ¬½Ó¸öÊý
-UDP_Total=$(ss -s | awk '$1=="UDP"{print $2}') #ËùÓÐUDPÁ¬½Ó¸öÊý
-Unix_sockets_Total=$(ss -ax | awk 'BEGIN{count=0} {count++} END{print count}') #ËùÓÐUNIX socketsÁ¬½Ó¸öÊý
-TCP_Listen_Total=$(ss -antlpH | awk 'BEGIN{count=0} {count++} END{print count}') #ËùÓÐ´¦ÓÚListen¼àÌý×´Ì¬µÄTCP¶Ë¿Ú¸öÊý
-TCP_Estab_Total=$(ss -antph | awk 'BEGIN{count=0} /^ESTAB/{count++} END{print count}') #ËùÓÐ´¦ÓÚESTABLISHED×´Ì¬TCPÁ¬½Ó¸öÊý
-TCP_SYN_RECV_Total=$(ss -antpH | awk 'BEGIN{count=0} /^SYN-RECV/{count++} END{print count}') #ËùÓÐ´¦ÓÚSYN_RECV×´Ì¬µÄTCPÁ¬½Ó¸öÊý
-TCP_TIME_WAIT_Total=$(ss -antpH | awk 'BEGIN{count=0} /^TIME-WAIT/{count++} END{print count}') #ËùÓÐ´¦ÓÚTIME-WAIT×´Ì¬µÄTCPÁ¬½Ó¸öÊý
-TCP_TIME_WAIT1_Total=$(ss -antpH | awk 'BEGIN{count=0} /^TIME-WAIT1/{count++} END{print count}') #ËùÓÐ´¦ÓÚTIME-WAIT1×´Ì¬µÄTCPÁ¬½Ó¸öÊý
-TCP_TIME_WAIT2_Total=$(ss -antpH | awk 'BEGIN{count=0} /^TIME-WAIT2/{count++} END{print count}') #ËùÓÐ´¦ÓÚTIME-WAIT2×´Ì¬µÄTCPÁ¬½Ó¸öÊý
-TCP_Remote_Count=$(ss -antH | awk '$1!~/LISTEN/{IP[$5]++} END{ for(i in IP) {print IP[i],i} }' | sort -nr) #ËùÓÐÔ¶³ÌÖ÷»úTCPÁ¬½Ó´ÎÊý
-TCP_Port_Count=$(ss -antH | sed -r 's/ +/ /g' | awk -F"[ :]" '$1!~/LISTEN/{port[$5]++} END{for(i in port) {print port[i],i}}' | sort -nr) #Ã¿¸ö¶Ë¿Ú±»·ÃÎÊ´ÎÊý
+TCP_Total=$(ss -s | awk '$1=="TCP"{print $2}') #æ‰€æœ‰TCPè¿žæŽ¥ä¸ªæ•°
+UDP_Total=$(ss -s | awk '$1=="UDP"{print $2}') #æ‰€æœ‰UDPè¿žæŽ¥ä¸ªæ•°
+Unix_sockets_Total=$(ss -ax | awk 'BEGIN{count=0} {count++} END{print count}') #æ‰€æœ‰UNIX socketsè¿žæŽ¥ä¸ªæ•°
+TCP_Listen_Total=$(ss -antlpH | awk 'BEGIN{count=0} {count++} END{print count}') #æ‰€æœ‰å¤„äºŽListenç›‘å¬çŠ¶æ€çš„TCPç«¯å£ä¸ªæ•°
+TCP_Estab_Total=$(ss -antph | awk 'BEGIN{count=0} /^ESTAB/{count++} END{print count}') #æ‰€æœ‰å¤„äºŽESTABLISHEDçŠ¶æ€TCPè¿žæŽ¥ä¸ªæ•°
+TCP_SYN_RECV_Total=$(ss -antpH | awk 'BEGIN{count=0} /^SYN-RECV/{count++} END{print count}') #æ‰€æœ‰å¤„äºŽSYN_RECVçŠ¶æ€çš„TCPè¿žæŽ¥ä¸ªæ•°
+TCP_TIME_WAIT_Total=$(ss -antpH | awk 'BEGIN{count=0} /^TIME-WAIT/{count++} END{print count}') #æ‰€æœ‰å¤„äºŽTIME-WAITçŠ¶æ€çš„TCPè¿žæŽ¥ä¸ªæ•°
+TCP_TIME_WAIT1_Total=$(ss -antpH | awk 'BEGIN{count=0} /^TIME-WAIT1/{count++} END{print count}') #æ‰€æœ‰å¤„äºŽTIME-WAIT1çŠ¶æ€çš„TCPè¿žæŽ¥ä¸ªæ•°
+TCP_TIME_WAIT2_Total=$(ss -antpH | awk 'BEGIN{count=0} /^TIME-WAIT2/{count++} END{print count}') #æ‰€æœ‰å¤„äºŽTIME-WAIT2çŠ¶æ€çš„TCPè¿žæŽ¥ä¸ªæ•°
+TCP_Remote_Count=$(ss -antH | awk '$1!~/LISTEN/{IP[$5]++} END{ for(i in IP) {print IP[i],i} }' | sort -nr) #æ‰€æœ‰è¿œç¨‹ä¸»æœºTCPè¿žæŽ¥æ¬¡æ•°
+TCP_Port_Count=$(ss -antH | sed -r 's/ +/ /g' | awk -F"[ :]" '$1!~/LISTEN/{port[$5]++} END{for(i in port) {print port[i],i}}' | sort -nr) #æ¯ä¸ªç«¯å£è¢«è®¿é—®æ¬¡æ•°
 
-#¶¨ÒåÊä³öÑÕÉ«
+#å®šä¹‰è¾“å‡ºé¢œè‰²
 
-SUCCESS="echo -en \\033[1;32m"  #ÂÌÉ«
-NORMAL="echo -en \\033[0;39m" #ºÚÉ«
+SUCCESS="echo -en \\033[1;32m"  #ç»¿è‰²
+NORMAL="echo -en \\033[0;39m" #é»‘è‰²
 
-#ÏÔÊ¾TCPÁ¬½Ó×ÜÊý
+#æ˜¾ç¤ºTCPè¿žæŽ¥æ€»æ•°
 tcp_total(){
 
-	echo -n "TCPÁ¬½Ó×ÜÊý: "
+	echo -n "TCPè¿žæŽ¥æ€»æ•°: "
 	$SUCCESS
 	echo "$TCP_Total"
 	$NORMAL
 }
 
-#ÏÔÊ¾´¦ÓÚLISTEN×´Ì¬µÄTCP¶Ë¿Ú¸öÊý
+#æ˜¾ç¤ºå¤„äºŽLISTENçŠ¶æ€çš„TCPç«¯å£ä¸ªæ•°
 
 tcp_listen(){
-	echo -n "´¦ÓÚLISTEN×´Ì¬µÄTCP¶Ë¿Ú¸öÊý"
+	echo -n "å¤„äºŽLISTENçŠ¶æ€çš„TCPç«¯å£ä¸ªæ•°"
 	$SUCCESS
 	echo "$TCP_Listen_Total"
 	$NORMAL
 }
 
-#ÏÔÊ¾´¦ÓÚESTABLISHED×´Ì¬µÄTCPÁ¬½Ó¸öÊý
+#æ˜¾ç¤ºå¤„äºŽESTABLISHEDçŠ¶æ€çš„TCPè¿žæŽ¥ä¸ªæ•°
 tcp_estab(){
-	echo -n "´¦ÓÚESTAB×´Ì¬µÄTCPÁ¬½Ó¸öÊý:"
+	echo -n "å¤„äºŽESTABçŠ¶æ€çš„TCPè¿žæŽ¥ä¸ªæ•°:"
 	$SUCCESS
 	echo "TCP_Estab_Total"
 	$NORMAL
 }
 
-#ÏÔÊ¾´¦ÓÚSYN-RECV×´Ì¬µÄTCPÁ¬½Ó¸öÊý
+#æ˜¾ç¤ºå¤„äºŽSYN-RECVçŠ¶æ€çš„TCPè¿žæŽ¥ä¸ªæ•°
 
 tcp_syn_recv(){
-	echo -n "´¦ÓÚSYN-RECV×´Ì¬µÄTCPÁ¬½Ó¸öÊý:"
+	echo -n "å¤„äºŽSYN-RECVçŠ¶æ€çš„TCPè¿žæŽ¥ä¸ªæ•°:"
 	$SUCCESS
 	echo "TCP_SYN_RECV_Total"
 	$NORMAL
 }
 
-#ÏÔÊ¾´¦ÓÚTIME-WAIT×´Ì¬µÄTCPÁ¬½Ó¸öÊý
+#æ˜¾ç¤ºå¤„äºŽTIME-WAITçŠ¶æ€çš„TCPè¿žæŽ¥ä¸ªæ•°
 
 tcp_time_wait(){
-	echo -n "´¦ÓÚTIME-WAIT×´Ì¬µÄTCPÁ¬½Ó¸öÊý:"
+	echo -n "å¤„äºŽTIME-WAITçŠ¶æ€çš„TCPè¿žæŽ¥ä¸ªæ•°:"
 	$SUCCESS
 	echo "$TCP_TIME_WAIT_Total"
 	$NORMAL
 }
 
-#ÏÔÊ¾´¦ÓÚTIME-WAIT1×´Ì¬µÄTCPÁ¬½Ó¸öÊý
+#æ˜¾ç¤ºå¤„äºŽTIME-WAIT1çŠ¶æ€çš„TCPè¿žæŽ¥ä¸ªæ•°
 tcp_time_wait1(){
-	echo -n "´¦ÓÚTIME-WAIT1×´Ì¬µÄTCPÁ¬½Ó¸öÊý:"
+	echo -n "å¤„äºŽTIME-WAIT1çŠ¶æ€çš„TCPè¿žæŽ¥ä¸ªæ•°:"
 	$SUCCESS
 	echo "$TCP_TIME_WAIT1_Total"
 	$NoRMAL
 }
 
-#ÏÔÊ¾´¦ÓÚTIME-WAIT2×´Ì¬µÄTCPÁ¬½Ó¸öÊý
+#æ˜¾ç¤ºå¤„äºŽTIME-WAIT2çŠ¶æ€çš„TCPè¿žæŽ¥ä¸ªæ•°
 tcp_time_wait2(){
-	echo -n "´¦ÓÚTIME-WAIT2×´Ì¬µÄTCPÁ¬½Ó¸öÊý:"
+	echo -n "å¤„äºŽTIME-WAIT2çŠ¶æ€çš„TCPè¿žæŽ¥ä¸ªæ•°:"
 	$SUCCESS
 	echo "$TCP_TIME_WAIT2_Total"
 	$NORMAL
 }
 
-#ÏÔÊ¾UDPÁ¬½Ó×ÜÊý
+#æ˜¾ç¤ºUDPè¿žæŽ¥æ€»æ•°
 
 udp_total(){
-	echo -n "UDPÁ¬½Ó×ÜÊý:"
+	echo -n "UDPè¿žæŽ¥æ€»æ•°:"
 	$SUCCESS
 	echo "$UDP_Total"
 	$NORMAL
 }
 
-#ÏÔÊ¾UNIX socketsÁ¬½Ó×ÜÊý
+#æ˜¾ç¤ºUNIX socketsè¿žæŽ¥æ€»æ•°
 
 unix_total(){
-	echo -n "Unix sockets Á¬½Ó×ÜÊý:"
+	echo -n "Unix sockets è¿žæŽ¥æ€»æ•°:"
 	$SUCCESS
 	echo "$Unix_sockets_Total"
 	$NORMAL
 }
 
-#ÏÔÊ¾Ã¿¸öÔ¶³ÌÖ÷»úµÄ·ÃÎÊ´ÎÊý
+#æ˜¾ç¤ºæ¯ä¸ªè¿œç¨‹ä¸»æœºçš„è®¿é—®æ¬¡æ•°
 remote_count(){
-	echo -n "Ã¿¸öÔ¶³ÌÖ÷»úÓë±¾»úµÄ²¢·¢Á¬½ÓÊý:"
+	echo -n "æ¯ä¸ªè¿œç¨‹ä¸»æœºä¸Žæœ¬æœºçš„å¹¶å‘è¿žæŽ¥æ•°:"
 	$SUCCESS
 	echo "$TCP_Remote_Count"
 	$NORMAL
 }
 
-#ÏÔÊ¾Ã¿¸ö¶Ë¿ÚµÄ²¢·¢Á¬½ÓÊý
+#æ˜¾ç¤ºæ¯ä¸ªç«¯å£çš„å¹¶å‘è¿žæŽ¥æ•°
 
 port_count(){
-	echo -n "Ã¿¸ö¶Ë¿ÚµÄ²¢·¢Á¬½ÓÊý:"
+	echo -n "æ¯ä¸ªç«¯å£çš„å¹¶å‘è¿žæŽ¥æ•°:"
 	$SUCCESS
 	echo "$TCP_Port_Count"
 	$NORMAL
