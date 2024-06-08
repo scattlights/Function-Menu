@@ -6,6 +6,8 @@ if [[ -d "$DIRECTORY" && -f "$FILE" ]]; then
 else
 	echo "目录或文件不存在！"
 fi
+
+exit 0
 	
 	
 	
