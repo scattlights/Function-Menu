@@ -1,4 +1,3 @@
-<a name="top"></a>
 # Shell脚本练习
 **1.清理日志和临时文件:**            
 ```shell
@@ -8,9 +7,11 @@ bash <(curl -Ls https://raw.githubusercontent.com/just2so/Mshell/main/clean.sh)
 ```shell
 bash <(curl -Ls https://raw.githubusercontent.com/just2so/Mshell/main/test.sh)
 ```
-<div align="right">
-    <b><a href="#top">↥ back to top</a></b>
-</div>
+**3.网络扫描：**
+```shell
+bash <(curl -Ls https://raw.githubusercontent.com/just2so/Mshell/main/network_scan.sh)
+```
+
 
 
 
