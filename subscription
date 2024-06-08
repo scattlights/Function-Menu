@@ -1,7 +1,0 @@
-#!/bin/bash
-FILE="/test/one.txt"
-if [ -f "$FILE" ]; then
-echo "one" >> one.txt
-else
-echo "ok"
-fi
