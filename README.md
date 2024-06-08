@@ -7,7 +7,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/just2so/Mshell/main/clean.sh)
 ```shell
 bash <(curl -Ls https://raw.githubusercontent.com/just2so/Mshell/main/test.sh)
 ```
-Loading…
+```Loading…```
 
 
 
