@@ -11,6 +11,10 @@ bash <(curl -Ls https://raw.githubusercontent.com/just2so/Mshell/main/test.sh)
 ```shell
 bash <(curl -Ls https://raw.githubusercontent.com/just2so/Mshell/main/network_scan.sh)
 ```
+**4.监控网络连接状态：**
+```shell
+bash <(curl -Ls https://raw.githubusercontent.com/just2so/Mshell/main/listen_for_network_connection_status.sh)
+```
 
 
 
