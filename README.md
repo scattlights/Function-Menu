@@ -8,7 +8,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/just2so/Mshell/main/clean.sh)
 bash <(curl -Ls https://raw.githubusercontent.com/just2so/Mshell/main/test.sh)
 ```
 <div align="right">
-    <b><a href="#Shell脚本练习">↥ back to top</a></b>
+    <b><a href="#top">↥ back to top</a></b>
 </div>
 
 
