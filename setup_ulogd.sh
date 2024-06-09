@@ -43,11 +43,18 @@ iptables -A OUTPUT -p tcp --dport 443 -j NFLOG --nflog-prefix "HTTPS_OUT: "
 rule_path="/etc/iptables/rules.v4"
 
 if [ -f "$rule_path" ]; then
-# 保存iptables规则
 	echo "保存iptables规则..."
+ 	# 保存iptables规则
 	iptables-save > "$rule_path"
-else 
+else
+	# 创建文件
 	touch "$rule_path"
+ 	if [ $? -eq 0 ]; then
+        	echo "文件创建成功"
+    	else
+        	echo "文件创建失败"
+        exit 1
+    fi
 fi
 
 # 重启ulogd服务
@@ -59,4 +66,4 @@ echo "检查ulogd服务状态..."
 systemctl status ulogd
 
 # 提示完成
-echo "配置完成。HTTP和HTTPS流量日志记录在/var/log/ulogd.log中。"
+echo "配置完成,HTTP和HTTPS流量日志记录在/var/log/ulogd.log中。"
