@@ -15,6 +15,10 @@ bash <(curl -Ls https://raw.githubusercontent.com/just2so/Mshell/main/listen_for
 ```shell
 bash <(curl -Ls https://raw.githubusercontent.com/just2so/Mshell/main/connection_statistics.sh)
 ```
+**流量监控**
+```shell
+bash <(curl -Ls https://raw.githubusercontent.com/just2so/Mshell/main/setup_ulogd.sh)
+```
 
 
 
