@@ -53,25 +53,6 @@ iptables -A INPUT -p tcp --dport 443 -j NFLOG --nflog-prefix "HTTPS_IN: "
 iptables -A OUTPUT -p tcp --dport 80 -j NFLOG --nflog-prefix "HTTP_OUT: "
 iptables -A OUTPUT -p tcp --dport 443 -j NFLOG --nflog-prefix "HTTPS_OUT: "
 
-if [ -f rules.v4 ]; then
-# 保存iptables规则
-	echo "保存iptables规则..."
-	iptables-save > /etc/iptables/rules.v4
-else 
-	touch rules.v4
-fi
-
-# 重启ulogd服务
-echo "重启ulogd服务..."
-service ulogd2 restart
-
-# 检查ulogd服务状态
-echo "检查ulogd服务状态..."
-systemctl status ulogd
-
-# 提示完成
-echo "配置完成。HTTP和HTTPS流量日志记录在/var/log/ulogd.log中。"
-
 # 定义函数创建文件夹
 create_directory() {
     local dir_path="$1"
