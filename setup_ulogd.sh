@@ -1,8 +1,6 @@
 ﻿#!/bin/bash
 export LANG=en_US.UTF-8
 
-#!/bin/bash
-
 # 检查是否以root用户运行脚本
 if [ "$(id -u)" -ne 0 ]; then
     echo "请使用root用户或通过sudo运行此脚本。"
