@@ -57,21 +57,15 @@ iptables -A OUTPUT -p tcp --dport 443 -j NFLOG --nflog-prefix "HTTPS_OUT: "
 create_directory() {
     local dir_path="$1"
     
-    if [ ! -d "$dir_path" ]; then
-        echo "创建文件夹：$dir_path"
-        
+    if [ ! -d "$dir_path" ]; then     
         # 创建文件夹
         mkdir -p "$dir_path"
         
-        if [ $? -eq 0 ]; then
-            echo "创建成功"
-        else
+        if [ $? -ne 0 ]; then
             echo "创建失败"
             exit 1
         fi
-    else
-        echo "文件夹已经存在：$dir_path"
-    fi
+	fi
 }
 
 # 定义函数创建文件
@@ -79,18 +73,17 @@ create_file() {
     local file_path="$1"
     
     if [ -f "$file_path" ]; then
-        echo "文件已经存在：$file_path"
         echo "保存iptables规则..."
         # 保存iptables规则
         iptables-save > "$file_path"
     else
-        echo "创建文件：$file_path"
-        
         # 创建文件
         touch "$file_path"
         
         if [ $? -eq 0 ]; then
-            echo "创建成功"
+	    echo "保存iptables规则..."
+            # 保存iptables规则
+            iptables-save > "$file_path"
         else
             echo "创建失败"
             exit 1
