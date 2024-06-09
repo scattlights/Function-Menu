@@ -30,6 +30,27 @@ if [ ! -d "$file_path" ];then
 echo "备份原始的ulogd配置文件..."
 cp /etc/ulogd.conf /etc/ulogd.conf.bak
 
+# 找出 ulogd2 进程的 PID
+ulogd_pid=$(ps aux | grep ulogd | grep -v grep | awk '{print $2}')
+
+if [ -n "$ulogd_pid" ]; then
+    echo "ulogd2 进程的 PID 是: $ulogd_pid"
+    
+    # 创建 PID 文件并写入 PID
+    pid_file="/run/ulog/ulogd.pid"
+    echo "$ulogd_pid" | sudo tee "$pid_file" > /dev/null
+    
+    if [ $? -eq 0 ]; then
+        echo "PID 文件创建成功: $pid_file"
+    else
+        echo "PID 文件创建失败"
+        exit 1
+    fi
+else
+    echo "未找到 ulogd2 进程"
+    exit 1
+fi
+
 # 配置ulogd
 echo "配置ulogd..."
 cat <<EOL > /etc/ulogd.conf
