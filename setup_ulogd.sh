@@ -39,15 +39,15 @@ iptables -A INPUT -p tcp --dport 443 -j NFLOG --nflog-prefix "HTTPS_IN: "
 iptables -A OUTPUT -p tcp --dport 80 -j NFLOG --nflog-prefix "HTTP_OUT: "
 iptables -A OUTPUT -p tcp --dport 443 -j NFLOG --nflog-prefix "HTTPS_OUT: "
 
-#变量
-RULES="/etc/iptables/rules.v4"
+#定义文件路径变量
+rule_path="/etc/iptables/rules.v4"
 
-if [ -f $RULES ]; then
+if [ -f "$file_path" ]; then
 # 保存iptables规则
 	echo "保存iptables规则..."
-	iptables-save > /etc/iptables/rules.v4
+	iptables-save > "$file_path"
 else 
-	touch $RULES
+	touch "$file_path"
 fi
 
 # 重启ulogd服务
