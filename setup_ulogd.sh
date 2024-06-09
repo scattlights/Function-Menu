@@ -42,12 +42,12 @@ iptables -A OUTPUT -p tcp --dport 443 -j NFLOG --nflog-prefix "HTTPS_OUT: "
 #定义文件路径变量
 rule_path="/etc/iptables/rules.v4"
 
-if [ -f "$file_path" ]; then
+if [ -f "$rule_path" ]; then
 # 保存iptables规则
 	echo "保存iptables规则..."
-	iptables-save > "$file_path"
+	iptables-save > "$rule_path"
 else 
-	touch "$file_path"
+	touch "$rule_path"
 fi
 
 # 重启ulogd服务
