@@ -39,20 +39,24 @@ iptables -A INPUT -p tcp --dport 443 -j NFLOG --nflog-prefix "HTTPS_IN: "
 iptables -A OUTPUT -p tcp --dport 80 -j NFLOG --nflog-prefix "HTTP_OUT: "
 iptables -A OUTPUT -p tcp --dport 443 -j NFLOG --nflog-prefix "HTTPS_OUT: "
 
-#定义文件路径变量
+# 定义文件路径变量
 rule_path="/etc/iptables/rules.v4"
 
 if [ -f "$rule_path" ]; then
-	echo "保存iptables规则..."
- 	# 保存iptables规则
-	iptables-save > "$rule_path"
+    echo "文件已经存在：$rule_path"
+    echo "保存iptables规则..."
+    # 保存iptables规则
+    iptables-save > "$rule_path"
 else
-	# 创建文件
-	touch "$rule_path"
- 	if [ $? -eq 0 ]; then
-        	echo "文件创建成功"
-    	else
-        	echo "文件创建失败"
+    echo "文件不存在，创建文件：$rule_path"
+    
+    # 创建文件
+    touch "$rule_path"
+    
+    if [ $? -eq 0 ]; then
+        echo "文件创建成功"
+    else
+        echo "文件创建失败"
         exit 1
     fi
 fi
