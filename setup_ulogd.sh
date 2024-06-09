@@ -46,15 +46,15 @@ iptables_dir="/etc/iptables"
 
 # 检查文件夹是否存在
 if [ ! -d "$iptables_dir" ]; then
-    echo "文件夹不存在，创建文件夹：$iptables_dir"
+    echo "创建文件夹：$iptables_dir"
     
     # 创建文件夹
     mkdir -p "$iptables_dir"
     
     if [ $? -eq 0 ]; then
-        echo "文件夹创建成功"
+        echo "创建成功"
     else
-        echo "文件夹创建失败"
+        echo "创建失败"
         exit 1
     fi
 fi
@@ -68,15 +68,15 @@ if [ -f "$rule_path" ]; then
     # 保存iptables规则
     iptables-save > "$rule_path"
 else
-    echo "文件不存在，创建文件：$rule_path"
+    echo "创建文件：$rule_path"
     
     # 创建文件
     touch "$rule_path"
     
     if [ $? -eq 0 ]; then
-        echo "文件创建成功"
+        echo "创建成功"
     else
-        echo "文件创建失败"
+        echo "创建失败"
         exit 1
     fi
 fi
