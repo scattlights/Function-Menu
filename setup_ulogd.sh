@@ -32,15 +32,6 @@ file="/var/log/ulogd.log"
 sync=1
 EOL
 
-# 配置iptables规则以记录HTTP和HTTPS流量
-echo "配置iptables规则以记录HTTP和HTTPS流量..."
-iptables -A INPUT -p tcp --dport 80 -j NFLOG --nflog-prefix "HTTP_IN: "
-iptables -A INPUT -p tcp --dport 443 -j NFLOG --nflog-prefix "HTTPS_IN: "
-iptables -A OUTPUT -p tcp --dport 80 -j NFLOG --nflog-prefix "HTTP_OUT: "
-iptables -A OUTPUT -p tcp --dport 443 -j NFLOG --nflog-prefix "HTTPS_OUT: "
-
-#!/bin/bash
-
 # 定义文件夹路径变量
 iptables_dir="/etc/iptables"
 
@@ -81,14 +72,23 @@ else
     fi
 fi
 
+# 配置iptables规则以记录HTTP和HTTPS流量
+echo "配置iptables规则以记录HTTP和HTTPS流量..."
+iptables -A INPUT -p tcp --dport 80 -j NFLOG --nflog-prefix "HTTP_IN: "
+iptables -A INPUT -p tcp --dport 443 -j NFLOG --nflog-prefix "HTTPS_IN: "
+iptables -A OUTPUT -p tcp --dport 80 -j NFLOG --nflog-prefix "HTTP_OUT: "
+iptables -A OUTPUT -p tcp --dport 443 -j NFLOG --nflog-prefix "HTTPS_OUT: "
 
 # 重启ulogd服务
 echo "重启ulogd服务..."
-service ulogd2 restart
+systemctl restart ulogd2
+
+# 等待一段时间，确保服务启动完成
+sleep 5
 
 # 检查ulogd服务状态
 echo "检查ulogd服务状态..."
-systemctl status ulogd
+systemctl status ulogd2
 
 # 提示完成
-echo "配置完成,HTTP和HTTPS流量日志记录在/var/log/ulogd.log中。"
+echo
