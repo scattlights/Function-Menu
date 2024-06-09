@@ -1,22 +1,23 @@
 #!/bin/bash
+export LANG=en_US.UTF-8
 
-# ¼ì²éÊÇ·ñÒÔrootÓÃ»§ÔËÐÐ½Å±¾
+# æ£€æŸ¥æ˜¯å¦ä»¥rootç”¨æˆ·è¿è¡Œè„šæœ¬
 if [ "$(id -u)" -ne 0 ]; then
-    echo "ÇëÊ¹ÓÃrootÓÃ»§»òÍ¨¹ýsudoÔËÐÐ´Ë½Å±¾¡£"
+    echo "è¯·ä½¿ç”¨rootç”¨æˆ·æˆ–é€šè¿‡sudoè¿è¡Œæ­¤è„šæœ¬ã€‚"
     exit 1
 fi
 
-# ¸üÐÂ°üÁÐ±í²¢°²×°ulogd2
-echo "¸üÐÂ°üÁÐ±í²¢°²×°ulogd2..."
+# æ›´æ–°åŒ…åˆ—è¡¨å¹¶å®‰è£…ulogd2
+echo "æ›´æ–°åŒ…åˆ—è¡¨å¹¶å®‰è£…ulogd2..."
 apt-get update
 apt-get install -y ulogd2
 
-# ±¸·ÝÔ­Ê¼µÄulogdÅäÖÃÎÄ¼þ
-echo "±¸·ÝÔ­Ê¼µÄulogdÅäÖÃÎÄ¼þ..."
+# å¤‡ä»½åŽŸå§‹çš„ulogdé…ç½®æ–‡ä»¶
+echo "å¤‡ä»½åŽŸå§‹çš„ulogdé…ç½®æ–‡ä»¶..."
 cp /etc/ulogd.conf /etc/ulogd.conf.bak
 
-# ÅäÖÃulogd
-echo "ÅäÖÃulogd..."
+# é…ç½®ulogd
+echo "é…ç½®ulogd..."
 cat <<EOL > /etc/ulogd.conf
 plugin="/usr/lib/ulogd/ulogd_inppkt_NFLOG.so"
 plugin="/usr/lib/ulogd/ulogd_filter_IFINDEX.so"
@@ -31,28 +32,28 @@ file="/var/log/ulogd.log"
 sync=1
 EOL
 
-# ÅäÖÃiptables¹æÔòÒÔ¼ÇÂ¼HTTPºÍHTTPSÁ÷Á¿
-echo "ÅäÖÃiptables¹æÔòÒÔ¼ÇÂ¼HTTPºÍHTTPSÁ÷Á¿..."
+# é…ç½®iptablesè§„åˆ™ä»¥è®°å½•HTTPå’ŒHTTPSæµé‡
+echo "é…ç½®iptablesè§„åˆ™ä»¥è®°å½•HTTPå’ŒHTTPSæµé‡..."
 iptables -A INPUT -p tcp --dport 80 -j NFLOG --nflog-prefix "HTTP_IN: "
 iptables -A INPUT -p tcp --dport 443 -j NFLOG --nflog-prefix "HTTPS_IN: "
 iptables -A OUTPUT -p tcp --dport 80 -j NFLOG --nflog-prefix "HTTP_OUT: "
 iptables -A OUTPUT -p tcp --dport 443 -j NFLOG --nflog-prefix "HTTPS_OUT: "
 
 if [ -f rules.v4 ]; then
-# ±£´æiptables¹æÔò
-	echo "±£´æiptables¹æÔò..."
+# ä¿å­˜iptablesè§„åˆ™
+	echo "ä¿å­˜iptablesè§„åˆ™..."
 	iptables-save > /etc/iptables/rules.v4
 else 
 	touch rules.v4
 fi
 
-# ÖØÆôulogd·þÎñ
-echo "ÖØÆôulogd·þÎñ..."
+# é‡å¯ulogdæœåŠ¡
+echo "é‡å¯ulogdæœåŠ¡..."
 service ulogd2 restart
 
-# ¼ì²éulogd·þÎñ×´Ì¬
-echo "¼ì²éulogd·þÎñ×´Ì¬..."
+# æ£€æŸ¥ulogdæœåŠ¡çŠ¶æ€
+echo "æ£€æŸ¥ulogdæœåŠ¡çŠ¶æ€..."
 systemctl status ulogd
 
-# ÌáÊ¾Íê³É
-echo "ÅäÖÃÍê³É¡£HTTPºÍHTTPSÁ÷Á¿ÈÕÖ¾¼ÇÂ¼ÔÚ/var/log/ulogd.logÖÐ¡£"
+# æç¤ºå®Œæˆ
+echo "é…ç½®å®Œæˆã€‚HTTPå’ŒHTTPSæµé‡æ—¥å¿—è®°å½•åœ¨/var/log/ulogd.logä¸­ã€‚"
