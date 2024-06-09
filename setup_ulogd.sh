@@ -39,6 +39,26 @@ iptables -A INPUT -p tcp --dport 443 -j NFLOG --nflog-prefix "HTTPS_IN: "
 iptables -A OUTPUT -p tcp --dport 80 -j NFLOG --nflog-prefix "HTTP_OUT: "
 iptables -A OUTPUT -p tcp --dport 443 -j NFLOG --nflog-prefix "HTTPS_OUT: "
 
+#!/bin/bash
+
+# 定义文件夹路径变量
+iptables_dir="/etc/iptables"
+
+# 检查文件夹是否存在
+if [ ! -d "$iptables_dir" ]; then
+    echo "文件夹不存在，创建文件夹：$iptables_dir"
+    
+    # 创建文件夹
+    mkdir -p "$iptables_dir"
+    
+    if [ $? -eq 0 ]; then
+        echo "文件夹创建成功"
+    else
+        echo "文件夹创建失败"
+        exit 1
+    fi
+fi
+
 # 定义文件路径变量
 rule_path="/etc/iptables/rules.v4"
 
@@ -60,6 +80,7 @@ else
         exit 1
     fi
 fi
+
 
 # 重启ulogd服务
 echo "重启ulogd服务..."
