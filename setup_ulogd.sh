@@ -37,26 +37,45 @@ systemctl restart ulogd2
 # 等待一段时间，确保服务启动完成
 sleep 5
 
+#!/bin/bash
+
 # 找出 ulogd2 进程的 PID
 ulogd_pid=$(ps aux | grep ulogd | grep -v grep | awk '{print $2}')
 
 if [ -n "$ulogd_pid" ]; then
     echo "ulogd2 进程的 PID 是: $ulogd_pid"
     
-    # 创建 PID 文件
+    # 定义 PID 文件路径
     pid_file="/run/ulog/ulogd.pid"
-    if [ -f "$pid_file" ];then
-    	rm "$pid_file"
-	touch "$pid_file"
-    else
-    	touch "$pid_file"
-    #写入 PID
+    pid_dir=$(dirname "$pid_file")
+    
+    # 检查目录是否存在，如果不存在则创建
+    if [ ! -d "$pid_dir" ]; then
+        mkdir -p "$pid_dir"
+        if [ $? -ne 0 ]; then
+            echo "无法创建目录: $pid_dir"
+            exit 1
+        fi
+    fi
+    
+    # 删除已存在的 PID 文件
+    if [ -f "$pid_file" ]; then
+        rm "$pid_file"
+        if [ $? -ne 0 ]; then
+            echo "无法删除已存在的文件: $pid_file"
+            exit 1
+        fi
+    fi
+    
+    # 创建 PID 文件并写入 PID
+    touch "$pid_file"
     echo "$ulogd_pid" | sudo tee "$pid_file" > /dev/null
     
     if [ $? -ne 0 ]; then
         echo "PID 文件创建失败"
         exit 1
-    fi
+    else
+        echo "PID 文件创建成功: $pid_file"
     fi
 else
     echo "未找到 ulogd2 进程"
