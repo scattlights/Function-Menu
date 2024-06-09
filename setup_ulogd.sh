@@ -30,6 +30,13 @@ if [ ! -d "$file_path" ];then
 echo "备份原始的ulogd配置文件..."
 cp /etc/ulogd.conf /etc/ulogd.conf.bak
 
+# 重启ulogd服务
+echo "重启ulogd服务..."
+systemctl restart ulogd2
+
+# 等待一段时间，确保服务启动完成
+sleep 5
+
 # 找出 ulogd2 进程的 PID
 ulogd_pid=$(ps aux | grep ulogd | grep -v grep | awk '{print $2}')
 
