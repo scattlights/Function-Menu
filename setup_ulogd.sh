@@ -14,7 +14,19 @@ echo "更新包列表并安装ulogd2..."
 apt-get update
 apt-get install -y ulogd2
 
-# 备份原始的ulogd配置文件
+#创建本地变量
+file_path="/etc/ulogd.conf.bak"
+
+#文件不存在就创建
+if [ ! -d "$file_path" ];then
+	touch "$file_path"
+ 	if [ $? -ne 0 ]; then
+            echo "创建失败"
+	    exit 1
+	fi
+ fi
+
+ # 备份原始的ulogd配置文件
 echo "备份原始的ulogd配置文件..."
 cp /etc/ulogd.conf /etc/ulogd.conf.bak
 
