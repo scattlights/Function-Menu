@@ -43,15 +43,20 @@ ulogd_pid=$(ps aux | grep ulogd | grep -v grep | awk '{print $2}')
 if [ -n "$ulogd_pid" ]; then
     echo "ulogd2 进程的 PID 是: $ulogd_pid"
     
-    # 创建 PID 文件并写入 PID
+    # 创建 PID 文件
     pid_file="/run/ulog/ulogd.pid"
+    if [ -f "$pid_file" ];then
+    	rm "$pid_file"
+	touch "$pid_file"
+    else
+    	touch "$pid_file"
+    #写入 PID
     echo "$ulogd_pid" | sudo tee "$pid_file" > /dev/null
     
-    if [ $? -eq 0 ]; then
-        echo "PID 文件创建成功: $pid_file"
-    else
+    if [ $? -ne 0 ]; then
         echo "PID 文件创建失败"
         exit 1
+    fi
     fi
 else
     echo "未找到 ulogd2 进程"
