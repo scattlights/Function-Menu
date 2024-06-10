@@ -10,7 +10,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/just2so/Mshell/main/listen_for
 ```shell
 bash <(curl -Ls https://raw.githubusercontent.com/just2so/Mshell/main/connection_statistics.sh)
 ```
-**功能菜单**
+**功能菜单：**
 ```shell
 bash <(curl -Ls https://raw.githubusercontent.com/just2so/Mshell/main/function_menu.sh)
 ```
