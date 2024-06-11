@@ -42,7 +42,7 @@ tcp_listen(){
 tcp_estab(){
 	echo -n "处于ESTAB状态的TCP连接个数:"
 	$SUCCESS
-	echo "TCP_Estab_Total"
+	echo "$TCP_Estab_Total"
 	$NORMAL
 }
 
@@ -51,7 +51,7 @@ tcp_estab(){
 tcp_syn_recv(){
 	echo -n "处于SYN-RECV状态的TCP连接个数:"
 	$SUCCESS
-	echo "TCP_SYN_RECV_Total"
+	echo "$TCP_SYN_RECV_Total"
 	$NORMAL
 }
 
