@@ -106,7 +106,7 @@ real_time_traffic(){
         main_menu nic
         eth=$nic
     fi  
-  
+    #局部变量
     local clear=true
     local eth_in_peak=0
     local eth_out_peak=0
@@ -114,6 +114,7 @@ real_time_traffic(){
     local eth_out=0
     echo -e "${green}请稍等，实时流量显示时可以按任意键返回主菜单...${nc}"
     sleep 2
+    tput civis   # 禁止光标显示
     while true;do
 	# 设置终端属性，禁止按键显示
         stty -echo
@@ -122,6 +123,7 @@ real_time_traffic(){
 	if [[ $? -eq 0 ]];then
 		# 恢复终端属性
                 stty echo
+		tput cnorm   # 恢复光标显示
 		#跳出循环
 		break
 	fi
@@ -149,7 +151,6 @@ real_time_traffic(){
 	#把true的值改为false
         [[ $clear == true ]] && clear=false
     done
-	
 }
 
 main(){
