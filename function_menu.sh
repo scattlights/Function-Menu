@@ -29,10 +29,10 @@ bit_to_human_readable(){
     local trafficValue=$1
   
     if [[ ${trafficValue%.*} -gt 922 ]];then
-        #conv to Kb
+        #转换成Kb
         trafficValue=`awk -v value=$trafficValue 'BEGIN{printf "%0.1f",value/1024}'`
         if [[ ${trafficValue%.*} -gt 922 ]];then
-            #conv to Mb
+            #转换成Mb
             trafficValue=`awk -v value=$trafficValue 'BEGIN{printf "%0.1f",value/1024}'`
             echo "${trafficValue}Mb"
         else
@@ -94,7 +94,7 @@ delete_log_files(){
 
 # 选项5：实时流量
 real_time_traffic(){
-	local eth=""
+    local eth=""
     local nic_arr=(`ifconfig | grep -E -o "^[a-z0-9]+" | grep -v "lo" | uniq`)
     local nicLen=${#nic_arr[@]}
     if [[ $nicLen -eq 0 ]]; then
@@ -119,7 +119,6 @@ real_time_traffic(){
         stty -echo
 	#检测到用户输入，就跳出循环
 	read -s -n 1 -t 0.1 key
-
 	if [[ $? -eq 0 ]];then
 		# 恢复终端属性
                 stty echo
