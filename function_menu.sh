@@ -6,7 +6,8 @@ red='\033[0;31m'
 green='\033[0;32m'
 yellow='\033[0;33m'
 blue='\033[0;36m'
-nc='\033[0m' # 无颜色
+#无颜色
+nc='\033[0m' 
 
 # 主菜单函数
 main_menu(){
@@ -27,7 +28,7 @@ main_menu(){
 bit_to_human_readable(){
     #输入比特值
     local trafficValue=$1
-  
+    
     if [[ ${trafficValue%.*} -gt 922 ]];then
         #转换成Kb
         trafficValue=`awk -v value=$trafficValue 'BEGIN{printf "%0.1f",value/1024}'`
@@ -114,7 +115,8 @@ real_time_traffic(){
     local eth_out=0
     echo -e "${green}请稍等，实时流量显示时可以按任意键返回主菜单...${nc}"
     sleep 2
-    tput civis   # 禁止光标显示
+    # 禁止光标显示
+    tput civis   
     while true;do
 	# 设置终端属性，禁止按键显示
         stty -echo
@@ -123,7 +125,8 @@ real_time_traffic(){
 	if [[ $? -eq 0 ]];then
 		# 恢复终端属性
                 stty echo
-		tput cnorm   # 恢复光标显示
+		# 恢复光标显示
+		tput cnorm   
 		#跳出循环
 		break
 	fi
