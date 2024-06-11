@@ -127,7 +127,7 @@ real_time_traffic(){
 	fi
         #移动光标到0:0位置
         printf "\033[0;0H"
-        #清屏并打印Now Peak
+        #如果clear为true，先清屏并打印Now Peak
         [[ $clear == true ]] && printf "\033[2J" && echo -e "${yellow}eth------Now--------Peak${nc}"
         traffic_be=(`awk -v eth=$eth -F'[: ]+' '{if ($0 ~eth){print $3,$11}}' /proc/net/dev`)
         sleep 2
@@ -146,6 +146,7 @@ real_time_traffic(){
         #清除当前行
         printf "\033[K"
         printf "${green}%-20s %-20s${nc}\n" "传输:  $(bit_to_human_readable $eth_out)" "$(bit_to_human_readable $eth_out_peak)"
+	#把true的值改为false
         [[ $clear == true ]] && clear=false
     done
 	
