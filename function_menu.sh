@@ -9,21 +9,6 @@ blue='\033[0;36m'
 #无颜色
 nc='\033[0m' 
 
-# 主菜单函数
-main_menu(){
-    echo 
-    #控制台输出，-e开启转义字符
-    echo -e "${yellow}==============================${nc}"
-    echo -e "${green}请输入你的选择，并按回车键确认:${nc}"
-    echo -e "${green}1. 显示系统信息${nc}"         
-    echo -e "${green}2. 显示磁盘空间${nc}"  
-    echo -e "${green}3. 清除临时文件${nc}" 	
-    echo -e "${green}4. 清除日志文件${nc}"
-    echo -e "${green}5. 实时流量${nc}"    
-    echo -e "${green}0. 退出${nc}"
-    echo -e "${yellow}==============================${nc}"
-}
-
 #把带宽bit单位转换为人类可读单位
 bit_to_human_readable(){
     #输入比特值
@@ -42,6 +27,21 @@ bit_to_human_readable(){
     else
         echo "${trafficValue}b"
     fi
+}
+
+# 主菜单函数
+main_menu(){
+    echo 
+    #控制台输出，-e开启转义字符
+    echo -e "${yellow}==============================${nc}"
+    echo -e "${green}请输入你的选择，并按回车键确认:${nc}"
+    echo -e "${green}1. 显示系统信息${nc}"         
+    echo -e "${green}2. 显示磁盘空间${nc}"  
+    echo -e "${green}3. 清除临时文件${nc}" 	
+    echo -e "${green}4. 清除日志文件${nc}"
+    echo -e "${green}5. 实时流量${nc}"    
+    echo -e "${green}0. 退出${nc}"
+    echo -e "${yellow}==============================${nc}"
 }
 
 # 选项1：显示系统信息
