@@ -1,5 +1,5 @@
 #!/bin/bash
-#Function: Push file to GitLab private repository.
+# Function: Push file to GitLab private repository.
 
 export LANG="en_US.UTF-8"
 
@@ -8,10 +8,10 @@ red='\033[0;31m'
 green='\033[0;32m'
 yellow='\033[0;33m'
 blue='\033[0;36m'
-#无颜色
+# 无颜色
 nc='\033[0m' 
 
-#清屏
+# 清屏
 clear
 
 # 设置GitLab用户信息
@@ -24,9 +24,7 @@ read -p "$(echo -e ${green}请输入分支名${nc})：" branch_name
 git config --global user.name "$user_name"
 git config --global user.email "$user_name@example.com"
 
-
 cd /usr
-
 if [ -d $repo_name ]; then
 	rm -r $repo_name
 fi
@@ -63,7 +61,7 @@ file_name=$(basename "$file_path")
 
 repo_file_path="/usr/$repo_name/$file_name"
 
-#新文件名为旧文件名加时间戳
+# 新文件名为旧文件名加时间戳
 new_file_name="${file_name%.*}_${timestamp}.${file_name##*.}"
 
 # 如果GitLab仓库中存在同名文件，则自动重新命名要推送的文件
@@ -86,13 +84,13 @@ git commit -m "初次提交"
 # 推送到远程仓库的main分支
 git push -u origin $branch_name
 
-#检查命令执行结果
+# 检查命令执行结果
 if [ $? -eq 0 ]; then
     echo -e "${green}推送成功...${nc}"
 else
-	echo -e "${green}推送失败...${nc}"
+    echo -e "${green}推送失败...${nc}"
 fi
 
-#删除本地仓库
+# 删除本地仓库
 cd ..
 rm -r $repo_name
