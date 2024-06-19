@@ -10,7 +10,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/just2so/MShell/main/connection
 ```shell
 bash <(curl -Ls https://raw.githubusercontent.com/just2so/MShell/main/function_menu.sh)
 ```
-**推送文件：**
+**推送文件到私有仓库：**
 ```shell
 bash <(curl -Ls https://raw.githubusercontent.com/just2so/MShell/main/push_file.sh)
 ```
