@@ -1,5 +1,5 @@
 #!/bin/bash
-#Function: Push files to GitLab private repository.
+#Function: Push file to GitLab private repository.
 
 export LANG="en_US.UTF-8"
 
