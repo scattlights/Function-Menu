@@ -8,7 +8,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/just2so/MShell/main/connection
 ```
 **功能菜单：**
 ```shell
-bash <(curl -Ls https://raw.githubusercontent.com/just2so/MShell/main/function_menu.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/just2so/MShell/main/function_menus_03.sh)
 ```
 **推送文件到私有仓库：**
 ```shell
