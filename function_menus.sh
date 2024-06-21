@@ -1,6 +1,5 @@
 #!/bin/bash
 export LANG="en_US.UTF-8"
-
 # 定义颜色代码
 red='\033[0;31m'
 green='\033[0;32m'
@@ -8,12 +7,10 @@ yellow='\033[0;33m'
 blue='\033[0;36m'
 #无颜色
 nc='\033[0m' 
-
 #带宽bit单位转换
 bit_to_human_readable(){
     #输入比特值
     local trafficValue=$1
-    
     if [[ ${trafficValue%.*} -gt 922 ]];then
         #转换成Kb
         trafficValue=`awk -v value=$trafficValue 'BEGIN{printf "%0.1f",value/1024}'`
@@ -28,7 +25,6 @@ bit_to_human_readable(){
         echo "${trafficValue}b"
     fi
 }
-
 #GitLab私有仓库信息填写
 gitlab_repo_info(){
 	while true; do
@@ -43,7 +39,6 @@ gitlab_repo_info(){
 	#输入合法，则跳出循环
 	break
 done
-
 while true; do
 	#请输入仓库名称
     read -p "$(echo -e ${yellow}请输入仓库名称:${nc}) " repo_name
@@ -56,7 +51,6 @@ while true; do
 	#输入合法，则跳出循环
 	break
 done
-
 while true; do
 	#请输入令牌
     read -p "$(echo -e ${yellow}请输入令牌:${nc}) " token
@@ -71,7 +65,7 @@ while true; do
     1)
         continue;;
     2)
-		return;;
+	return;;
     *)
        	echo -e "${red}无效的选择...${nc}"
 		continue;;
@@ -94,7 +88,6 @@ while true; do
 	break
 done
 }
-
 # 主菜单函数
 main_menu(){
     echo 
@@ -106,26 +99,23 @@ main_menu(){
     echo -e "${green}3. 清除临时文件${nc}" 	
     echo -e "${green}4. 清除日志文件${nc}"
     echo -e "${green}5. 实时流量${nc}"
-	echo -e "${green}6. 生成GitLab私有仓库访问链接${nc}"
+    echo -e "${green}6. 生成GitLab私有仓库访问链接${nc}"
     echo -e "${green}7. 推送单个文件到GitLab私有仓库并生成访问链接${nc}"
     echo -e "${green}0. 退出${nc}"
     echo -e "${yellow}==============================${nc}"
 }
-
 # 选项1：显示系统信息
 display_system_info(){
     echo "主机名称: $HOSTNAME"
     echo "运行时间：$(uptime)"
     read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
 }
-
 # 选项2：显示磁盘空间
 display_disk_space(){
     echo "磁盘空间:"
     df -h
     read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
 }
-
 # 选项3：清除临时文件
 delete_temporary_files(){
 	#需要清除垃圾文件的目录
@@ -143,7 +133,6 @@ delete_temporary_files(){
     read -p "$(echo -e ${blue}已清除，按回车键返回主菜单...${nc})"
 	fi
 }
-
 # 选项4：清除日志文件
 delete_log_files(){
 	#需要清除日志文件的目录
@@ -161,7 +150,6 @@ delete_log_files(){
     read -p "$(echo -e ${blue}已清除，按回车键返回主菜单...${nc})"
 	fi
 }
-
 # 选项5：实时流量
 real_time_traffic(){
     local eth=""
@@ -176,7 +164,6 @@ real_time_traffic(){
         main_menu nic
         eth=$nic
     fi  
-    #局部变量
     local clear=true
     local eth_in_peak=0
     local eth_out_peak=0
@@ -224,12 +211,10 @@ real_time_traffic(){
         [[ $clear == true ]] && clear=false
     done
 }
-
 #选项6：生成gitlab私有仓库访问链接
 generate_gitlab_access_link(){
 	#调用
 	gitlab_repo_info
-
 	while true; do
 	#请输入文件名称
     read -p "$(echo -e ${yellow}请输入包含路径的文件名称:${nc}) " file_name
@@ -259,36 +244,27 @@ generate_gitlab_access_link(){
     	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
 	fi
 }
-
 #选项7：推送单个文件到gitlab私有仓库，并生成访问链接
 push_file_to_gitlab(){
 # 清屏
 clear
-
 # 调用
 gitlab_repo_info
-
 # 配置Git全局用户信息
 git config --global user.name "$user_name"
 git config --global user.email "$user_name@example.com"
-
 cd /usr
 if [ -d $repo_name ]; then
 	rm -r $repo_name
 fi
-
 mkdir $repo_name
 cd $repo_name
-
 # 初始化本地仓库，指定初始化时创建的分支名和GitLab分支名一致
 git init -b $branch_name
-
 # 设置远程仓库
 git remote add origin https://$user_name:$token@gitlab.com/$user_name/$repo_name.git
-
 # 拉取最新
 git pull origin $branch_name
-
 while true; do
 	# 上传文件的路径
     read -p "$(echo -e ${green}请输入需要推送的包含路径的文件名称:${nc}) " file_path
@@ -300,21 +276,15 @@ while true; do
    	break
    fi
 done
-
 # 获取当前时间并格式化为年月日时分秒
 timestamp=$(date +"%Y%m%d_%H%M%S")
-
 # 获取文件名 
 file_name=$(basename "$file_path")
-
 repo_file_path="/usr/$repo_name/$file_name"
-
 # 新文件名为旧文件名加时间戳
 new_file_name="${file_name%.*}_${timestamp}.${file_name##*.}"
-
 # 访问链接文件名
 access_file_name=
-
 # 如果GitLab仓库中存在同名文件，则自动重新命名要推送的文件
 if [ -f "$repo_file_path" ]; then
 	  echo
@@ -330,20 +300,16 @@ if [ -f "$repo_file_path" ]; then
     git add $file_name
     access_file_name=$file_name
 fi
-
 # 提交
 git commit -m "初次提交"
-
 # 推送到远程仓库的指定分支
 git push -u origin $branch_name
-
 # 检查命令执行结果
 if [ $? -eq 0 ]; then
     echo -e "${green}推送成功...${nc}"
 else
     echo -e "${green}推送失败...${nc}"
 fi
-
 # 删除本地仓库
 cd ..
 rm -r $repo_name
@@ -353,7 +319,6 @@ echo -e "${green}链接:${link}${nc}"
 echo
 read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
 }
-
 main(){
 # 主循环
 while true; do
@@ -364,10 +329,10 @@ while true; do
         1) display_system_info;;
         2) display_disk_space;;
         3) delete_temporary_files;;
-	    4) delete_log_files;;
-	    5) real_time_traffic;;
-	    6) generate_gitlab_access_link;;
-		7) push_file_to_gitlab;;
+	4) delete_log_files;;
+	5) real_time_traffic;;
+	6) generate_gitlab_access_link;;
+	7) push_file_to_gitlab;;
         0) echo -e "${blue}程序已退出...${nc}"; exit;;
         *) echo -e "${red}输入有误，请重试...${nc}";;
     esac
