@@ -242,9 +242,7 @@ generate_gitlab_access_link(){
 	#输入合法，则跳出循环
 	break
     done
-
 	link="https://gitlab.com/api/v4/projects/${user_name}%2F${repo_name}/repository/files/${file_name}/raw?ref=${branch_name}&private_token=${token}"
-
 
     # 发送HEAD请求，检查状态码
     response_code=$(curl --silent --head --output /dev/null --write-out "%{http_code}" "$link")
