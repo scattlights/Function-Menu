@@ -9,7 +9,7 @@ blue='\033[0;36m'
 #无颜色
 nc='\033[0m' 
 
-#把带宽bit单位转换为人类可读单位
+#带宽bit单位转换
 bit_to_human_readable(){
     #输入比特值
     local trafficValue=$1
