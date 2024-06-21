@@ -1,4 +1,4 @@
-**监控网络连接状态：**
+#监控网络连接状态：#
 ```shell
 bash <(curl -Ls https://raw.githubusercontent.com/just2so/MShell/main/listen_for_network_connection_status.sh)
 ```
@@ -7,13 +7,11 @@ bash <(curl -Ls https://raw.githubusercontent.com/just2so/MShell/main/listen_for
 bash <(curl -Ls https://raw.githubusercontent.com/just2so/MShell/main/connection_statistics.sh)
 ```
 **功能菜单：**
+
 ```shell
-bash <(curl -Ls https://raw.githubusercontent.com/just2so/MShell/main/function_menus_03.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/just2so/MShell/main/function_menus.sh)
 ```
-**推送文件到私有仓库：**
-```shell
-bash <(curl -Ls https://raw.githubusercontent.com/just2so/MShell/main/push_file.sh)
-```
+
 
 
 
