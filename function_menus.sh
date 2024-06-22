@@ -34,7 +34,7 @@ fi
 check_git_installation() {
 	if ! command -v git &>/dev/null; then
 		echo -e "${yellow}正在安装Git...${nc}"
-		if [[ "$release" == "Debian" || "$release" == "Debian" ]]; then
+		if [[ "$release" == "Debian" || "$release" == "Ubuntu" ]]; then
 			sudo apt update
 			sudo apt install git -y
 		else
@@ -47,7 +47,7 @@ check_git_installation() {
 check_qrencode_installation() {
 	if ! command -v qrencode &>/dev/null; then
 		echo -e "${yellow}正在安装Qrencode...${nc}"
-		if [[ "$release" == "Debian" || "$release" == "Debian" ]]; then
+		if [[ "$release" == "Debian" || "$release" == "Ubuntu" ]]; then
 			sudo apt update
 			sudo apt install qrencode -y
 		else
