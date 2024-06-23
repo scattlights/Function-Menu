@@ -19,7 +19,7 @@ handle_restartvps() {
 	curl -s -X POST https://api.telegram.org/bot$BOT_TOKEN/sendMessage -d chat_id=$CHAT_ID -d text="正在重启VPS，请稍候..."
 
 	# 执行VPS重启的Shell脚本
-	/myshell/restart_vps.sh # 替换为你的实际脚本路径
+	/myshell/restart.sh # 替换为你的实际脚本路径
 }
 
 # 发送消息通知重启完成
