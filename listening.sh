@@ -7,13 +7,10 @@ OFFSET_FILE="/myshell/offset.txt"
 if [ ! -f "$OFFSET_FILE" ]; then
 	sudo touch "$OFFSET_FILE"
 	sudo chmod 666 "$OFFSET_FILE"
-fi
-
-# 从文件中读取最后一次处理的 offset
-if [ -f "$OFFSET_FILE" ]; then
+ 	OFFSET=0 # 初始的 offset 值
+  else	
+  	# 从文件中读取最后一次处理的 offset
 	OFFSET=$(cat "$OFFSET_FILE")
-else
-	OFFSET=0 # 初始的 offset 值
 fi
 
 # 处理/restartvps命令的函数
