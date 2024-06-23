@@ -2,12 +2,12 @@
 
 TG_INFO_FILE="/myshell/tg_info.sh"
 if [ ! -f "$TG_INFO_FILE" ]; then
-    sudo touch "$TG_INFO_FILE"
-    sudo chmod 666 "$TG_INFO_FILE"
+	sudo touch "$TG_INFO_FILE"
+	sudo chmod 666 "$TG_INFO_FILE"
 else
 	rm "$TG_INFO_FILE"
 	sudo touch "$TG_INFO_FILE"
-    sudo chmod 666 "$TG_INFO_FILE"
+	sudo chmod 666 "$TG_INFO_FILE"
 fi
 
 sudo rm /etc/systemd/system/tg.service
@@ -15,13 +15,13 @@ sudo rm /etc/systemd/system/tg.service
 # 电报机器人的API Token
 read -p "输入电报机器人API_Token:" YOUR_BOT_TOKEN
 BOT_TOKEN="${YOUR_BOT_TOKEN}"
-echo "BOT_TOKEN=\"$YOUR_BOT_TOKEN\"" > /myshell/tg_info.sh
+echo "BOT_TOKEN=\"$YOUR_BOT_TOKEN\"" >/myshell/tg_info.sh
 # 电报机器人的Chat ID（接收消息的用户的ID）
 read -p "输入电报机器人Chat_ID:" YOUR_CHAT_ID
 CHAT_ID="${YOUR_CHAT_ID}"
-echo "CHAT_ID=\"$YOUR_CHAT_ID\"" >> /myshell/tg_info.sh
+echo "CHAT_ID=\"$YOUR_CHAT_ID\"" >>/myshell/tg_info.sh
 if ! command -v jq &>/dev/null; then
-    sudo apt install jq -y
+	sudo apt install jq -y
 fi
 chmod +x /myshell/restart_vps.sh
 
@@ -61,6 +61,3 @@ sudo systemctl daemon-reload     # 重新加载 systemd 配置
 sudo systemctl enable tg.service # 启用服务，使其开机自启
 sudo systemctl start tg.service  # 启动服务
 sudo systemctl status tg.service # 查看服务状态
-
-
-
