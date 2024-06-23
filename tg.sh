@@ -12,11 +12,11 @@ fi
 
 sudo rm /etc/systemd/system/tg.service
 
-# 电报机器人的API Token
+# 电报机器人的API_Token
 read -p "输入电报机器人API_Token:" YOUR_BOT_TOKEN
 BOT_TOKEN="${YOUR_BOT_TOKEN}"
 echo "BOT_TOKEN=\"$YOUR_BOT_TOKEN\"" >/myshell/tg_info.sh
-# 电报机器人的Chat ID（接收消息的用户的ID）
+# 电报机器人的Chat_ID（接收消息的用户的ID）
 read -p "输入电报机器人Chat_ID:" YOUR_CHAT_ID
 CHAT_ID="${YOUR_CHAT_ID}"
 echo "CHAT_ID=\"$YOUR_CHAT_ID\"" >>/myshell/tg_info.sh
