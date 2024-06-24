@@ -156,7 +156,7 @@ main_menu() {
 	echo -e "${green}6. 生成GitLab私有仓库访问链接${nc}"
 	echo -e "${green}7. 推送单个文件到GitLab私有仓库并生成访问链接${nc}"
  	echo -e "${green}8. 安装fail2ban${nc}"
-  	echo -e "${green}9. 查看fail2ban封禁ip状态${nc}"
+  	echo -e "${green}9. 查看fail2ban封禁ip情况${nc}"
    	echo -e "${green}10. 卸载fail2ban${nc}"
 	echo -e "${green}0. 退出${nc}"
 	echo -e "${yellow}==============================${nc}"
@@ -395,8 +395,10 @@ push_file_to_gitlab() {
 install_fail2ban() {
 	#停止fail2ban服务
  	sudo systemctl stop fail2ban
-  	#删除本地配置文件
-	sudo rm  /etc/fail2ban/jail.local
+  	#如果存在，删除本地配置文件
+   	if [ -f /etc/fail2ban/jail.local ]; then
+    		sudo rm /etc/fail2ban/jail.local
+        fi
 	# 更新包列表并安装Fail2ban
 	sudo apt update
 	sudo apt install -y fail2ban
