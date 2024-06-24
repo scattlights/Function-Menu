@@ -156,6 +156,8 @@ main_menu() {
 	echo -e "${green}6. 生成GitLab私有仓库访问链接${nc}"
 	echo -e "${green}7. 推送单个文件到GitLab私有仓库并生成访问链接${nc}"
  	echo -e "${green}8. 安装fail2ban${nc}"
+  	echo -e "${green}9. 查看fail2ban封禁ip状态${nc}"
+   	echo -e "${green}10. 卸载fail2ban${nc}"
 	echo -e "${green}0. 退出${nc}"
 	echo -e "${yellow}==============================${nc}"
 }
@@ -389,7 +391,7 @@ push_file_to_gitlab() {
 	echo
 	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
 }
-#安装fail2ban
+#8.安装fail2ban
 install_fail2ban() {
 	#停止fail2ban服务
  	sudo systemctl stop fail2ban
@@ -437,7 +439,25 @@ EOL'
 	# 启动并启用Fail2ban服务
 	sudo systemctl start fail2ban
 	sudo systemctl enable fail2ban
-	echo -e "${yellow}Fail2ban 安装和配置完成${nc}。"
+	echo -e "${yellow}Fail2ban安装和配置完成。${nc}"
+ 	echo
+ 	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
+}
+#9.查看fail2ban状态
+check_fail2ban_status(){
+	sudo fail2ban-client status
+	sudo fail2ban-client status sshd
+ 	echo
+  	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
+}
+#10.卸载fail2ban
+uninstall_fail2ban(){
+	sudo systemctl stop fail2ban
+ 	sudo apt remove --purge fail2ban -y
+	sudo rm -rf /etc/fail2ban
+ 	echo -e "${yellow}Fail2ban已卸载。${nc}"
+ 	echo
+  	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
 }
 
 main() {
@@ -455,6 +475,8 @@ main() {
 		6) generate_gitlab_access_link ;;
 		7) push_file_to_gitlab ;;
   		8) install_fail2ban ;;
+    		9）check_fail2ban_status ;;
+      		10）uninstall_fail2ban ;;
 		0)
 			echo -e "${blue}程序已退出...${nc}"
 			exit
