@@ -399,6 +399,8 @@ install_fail2ban() {
    	if [ -f /etc/fail2ban/jail.local ]; then
     		sudo rm /etc/fail2ban/jail.local
         fi
+	echo -e "${yellow}注意：默认设置的监控的端口为SSH端口22，未修改SSH端口!!!${nc}"
+ 	echo
 	# 更新包列表并安装Fail2ban
 	sudo apt update
 	sudo apt install -y fail2ban
