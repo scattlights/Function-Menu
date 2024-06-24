@@ -452,6 +452,7 @@ check_fail2ban_status(){
 	echo -e "${yellow}Fail2ban未安装。${nc}"
  	echo
     	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
+     	return 
 	fi
 	sudo fail2ban-client status
 	sudo fail2ban-client status sshd
