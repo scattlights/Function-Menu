@@ -447,6 +447,12 @@ EOL'
 }
 #9.查看fail2ban状态
 check_fail2ban_status(){
+	# 检查命令是否存在
+	if ! command -v fail2ban-client > /dev/null 2>&1; then
+	echo -e "${yellow}Fail2ban未安装。${nc}"
+ 	echo
+    	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
+	fi
 	sudo fail2ban-client status
 	sudo fail2ban-client status sshd
  	echo
