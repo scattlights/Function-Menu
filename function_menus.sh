@@ -418,7 +418,7 @@ bantime  = 86400
 findtime  = 600
 #指定在findtime时间内允许的最大失败尝试次数。超过这个次数，IP将被拉黑
 maxretry = 5
-#义日志后端的类型。auto会自动选择最合适的后端。
+#定义日志后端的类型。auto会自动选择最合适的后端。
 backend = auto
 #指定接收Fail2ban通知的电子邮件地址
 destemail = root@localhost
