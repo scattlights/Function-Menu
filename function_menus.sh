@@ -475,8 +475,8 @@ main() {
 		6) generate_gitlab_access_link ;;
 		7) push_file_to_gitlab ;;
   		8) install_fail2ban ;;
-    		9）check_fail2ban_status ;;
-      		10）uninstall_fail2ban ;;
+    		9) check_fail2ban_status ;;
+      		10) uninstall_fail2ban ;;
 		0)
 			echo -e "${blue}程序已退出...${nc}"
 			exit
