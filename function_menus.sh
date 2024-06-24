@@ -155,6 +155,7 @@ main_menu() {
 	echo -e "${green}5. 实时流量${nc}"
 	echo -e "${green}6. 生成GitLab私有仓库访问链接${nc}"
 	echo -e "${green}7. 推送单个文件到GitLab私有仓库并生成访问链接${nc}"
+ 	echo -e "${green}8. 安装fail2ban${nc}"
 	echo -e "${green}0. 退出${nc}"
 	echo -e "${yellow}==============================${nc}"
 }
@@ -388,6 +389,56 @@ push_file_to_gitlab() {
 	echo
 	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
 }
+#安装fail2ban
+install_fail2ban() {
+	#停止fail2ban服务
+ 	sudo systemctl stop fail2ban
+  	#删除配置
+	sudo rm -rf /etc/fail2ban
+	# 更新包列表并安装Fail2ban
+	sudo apt update
+	sudo apt install -y fail2ban
+	# 创建本地配置文件
+	sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+
+	# 配置Fail2ban
+	sudo bash -c 'cat > /etc/fail2ban/jail.local <<EOL
+[DEFAULT]
+#定义哪些IP地址应该被忽略，不会被拉黑
+ignoreip = 127.0.0.1/8 192.168.1.0/24
+#指定被拉黑IP的拉黑时长，单位为秒
+bantime  = 86400
+#定义在多少秒内发生maxretry次失败尝试会导致拉黑
+findtime  = 600
+#指定在findtime时间内允许的最大失败尝试次数。超过这个次数，IP将被拉黑
+maxretry = 5
+#义日志后端的类型。auto会自动选择最合适的后端。
+backend = auto
+#指定接收Fail2ban通知的电子邮件地址
+destemail = root@localhost
+#发送通知时的发件人名称
+sendername = Fail2Ban
+#指定发送邮件的邮件传输代理
+mta = sendmail
+
+[sshd]
+#启用或禁用这个jail
+enabled = true
+#监控的端口
+port = ssh
+#指定Fail2ban使用的过滤器文件
+filter = sshd
+#指定Fail2ban监控的日志文件路径
+logpath = /var/log/auth.log
+#在这个jail中，指定在findtime时间内允许的最大失败尝试次数
+maxretry = 5
+EOL'
+
+	# 启动并启用Fail2ban服务
+	sudo systemctl start fail2ban
+	sudo systemctl enable fail2ban
+	echo -e "${yellow}Fail2ban 安装和配置完成${nc}。"
+}
 
 main() {
 	# 主循环
@@ -403,6 +454,7 @@ main() {
 		5) real_time_traffic ;;
 		6) generate_gitlab_access_link ;;
 		7) push_file_to_gitlab ;;
+  		8) install_fail2ban ;;
 		0)
 			echo -e "${blue}程序已退出...${nc}"
 			exit
