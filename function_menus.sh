@@ -393,8 +393,8 @@ push_file_to_gitlab() {
 install_fail2ban() {
 	#停止fail2ban服务
  	sudo systemctl stop fail2ban
-  	#删除配置
-	sudo rm -rf /etc/fail2ban
+  	#删除本地配置文件
+	sudo rm  /etc/fail2ban/jail.local
 	# 更新包列表并安装Fail2ban
 	sudo apt update
 	sudo apt install -y fail2ban
