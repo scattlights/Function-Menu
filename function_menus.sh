@@ -150,15 +150,13 @@ main_menu() {
 	echo -e "${green}请输入你的选择，并按回车键确认:${nc}"
 	echo -e "${green}1. 显示系统信息${nc}"
 	echo -e "${green}2. 显示磁盘空间${nc}"
-	echo -e "${green}3. 清除临时文件${nc}"
-	echo -e "${green}4. 清除日志文件${nc}"
-	echo -e "${green}5. 实时流量${nc}"
-	echo -e "${green}6. 生成GitLab私有仓库访问链接${nc}"
-	echo -e "${green}7. 推送单个文件到GitLab私有仓库并生成访问链接${nc}"
- 	echo -e "${green}8. 安装fail2ban${nc}"
-  	echo -e "${green}9. 查看fail2ban封禁ip情况${nc}"
-   	echo -e "${green}10. 卸载fail2ban${nc}"
-    	echo -e "${green}11. 修改SSH登录端口${nc}"
+	echo -e "${green}3. 实时流量${nc}"
+	echo -e "${green}4. 生成GitLab私有仓库访问链接${nc}"
+	echo -e "${green}5. 推送单个文件到GitLab私有仓库并生成访问链接${nc}"
+ 	echo -e "${green}6. 安装并自动配置fail2ban${nc}"
+  	echo -e "${green}7. 查看fail2ban封禁ip情况${nc}"
+   	echo -e "${green}8. 卸载fail2ban${nc}"
+    	echo -e "${green}9. 修改SSH登录端口${nc}"
 	echo -e "${green}0. 退出${nc}"
 	echo -e "${yellow}==============================${nc}"
 }
@@ -177,43 +175,7 @@ display_disk_space() {
 	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
 }
 
-# 选项3：清除临时文件
-delete_temporary_files() {
-	#需要清除垃圾文件的目录
-	read -p "$(echo -e ${yellow}输入需要清除垃圾文件的目录:${nc}) " directory
-	#如果目录不存在
-	if [ ! -d "$directory" ]; then
-		#输出
-		echo -e "${red}未找到该目录，即将返回主菜单...${nc}"
-		#等待1秒
-		sleep 1
-	else
-		#如果目录存在，删除临时文件
-		find "$directory" -type f -name "*.tmp" -exec rm -f {} \;
-		#输出，读取回车键
-		read -p "$(echo -e ${blue}已清除，按回车键返回主菜单...${nc})"
-	fi
-}
-
-# 选项4：清除日志文件
-delete_log_files() {
-	#需要清除日志文件的目录
-	read -p "$(echo -e ${yellow}输入需要清除垃圾文件的目录:${nc}) " directory
-	#如果目录不存在
-	if [ ! -d "$directory" ]; then
-		#输出
-		echo -e "${red}未找到该目录，即将返回主菜单...${nc}"
-		#等待1秒
-		sleep 1
-	else
-		#如果目录存在，删除临时文件
-		find "$directory" -type f -name "*.log" -exec rm -f {} \;
-		#输出
-		read -p "$(echo -e ${blue}已清除，按回车键返回主菜单...${nc})"
-	fi
-}
-
-# 选项5：实时流量
+# 选项3：实时流量
 real_time_traffic() {
 	local eth=""
 	local nic_arr=($(ifconfig | grep -E -o "^[a-z0-9]+" | grep -v "lo" | uniq))
@@ -275,7 +237,7 @@ real_time_traffic() {
 	done
 }
 
-#选项6：生成gitlab私有仓库访问链接
+#选项4：生成gitlab私有仓库访问链接
 generate_gitlab_access_link() {
 	check_qrencode_installation
 	gitlab_repo_info
@@ -312,7 +274,7 @@ generate_gitlab_access_link() {
 	fi
 }
 
-#选项7：推送单个文件到gitlab私有仓库，并生成访问链接
+#选项5：推送单个文件到gitlab私有仓库，并生成访问链接
 push_file_to_gitlab() {
 	check_git_installation
 	check_qrencode_installation
@@ -392,7 +354,7 @@ push_file_to_gitlab() {
 	echo
 	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
 }
-#8.安装fail2ban
+#6.安装fail2ban
 install_fail2ban() {
 	#停止fail2ban服务
  	sudo systemctl stop fail2ban
@@ -449,7 +411,7 @@ EOL"
  	echo
  	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
 }
-#9.查看fail2ban状态
+#7.查看fail2ban状态
 check_fail2ban_status(){
 	# 检查命令是否存在
 	if ! command -v fail2ban-client > /dev/null 2>&1; then
@@ -463,7 +425,7 @@ check_fail2ban_status(){
   	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
 	fi
 }
-#10.卸载fail2ban
+#8.卸载fail2ban
 uninstall_fail2ban(){
 	sudo systemctl stop fail2ban
  	sudo rm -rf /etc/fail2ban/jail.local
@@ -472,7 +434,7 @@ uninstall_fail2ban(){
  	echo
   	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
 }
-#11.修改SSH端口
+#9.修改SSH端口
 update_ssh_port(){
 	read -p "$(echo -e ${green}输入新的SSH登录的端口号：${nc}) " port
 	# 定义新的SSH端口号
@@ -495,15 +457,13 @@ main() {
 		case $choice in
 		1) display_system_info ;;
 		2) display_disk_space ;;
-		3) delete_temporary_files ;;
-		4) delete_log_files ;;
-		5) real_time_traffic ;;
-		6) generate_gitlab_access_link ;;
-		7) push_file_to_gitlab ;;
-  		8) install_fail2ban ;;
-    		9) check_fail2ban_status ;;
-      		10) uninstall_fail2ban ;;
-		11) update_ssh_port ;;
+		3) real_time_traffic ;;
+		4) generate_gitlab_access_link ;;
+		5) push_file_to_gitlab ;;
+  		6) install_fail2ban ;;
+    		7) check_fail2ban_status ;;
+      		8) uninstall_fail2ban ;;
+		9) update_ssh_port ;;
 		0)
 			echo -e "${blue}程序已退出...${nc}"
 			exit
