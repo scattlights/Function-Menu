@@ -466,7 +466,7 @@ check_fail2ban_status(){
 #10.卸载fail2ban
 uninstall_fail2ban(){
 	sudo systemctl stop fail2ban
- 	sudo rm -rf /etc/fail2ban
+ 	sudo rm -rf /etc/fail2ban/jail.local
  	sudo apt remove --purge fail2ban -y
  	echo -e "${yellow}Fail2ban已卸载。${nc}"
  	echo
