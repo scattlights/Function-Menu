@@ -158,6 +158,7 @@ main_menu() {
  	echo -e "${green}8. 安装fail2ban${nc}"
   	echo -e "${green}9. 查看fail2ban封禁ip情况${nc}"
    	echo -e "${green}10. 卸载fail2ban${nc}"
+    	echo -e "${green}11. 修改SSH登录端口${nc}"
 	echo -e "${green}0. 退出${nc}"
 	echo -e "${yellow}==============================${nc}"
 }
@@ -399,7 +400,7 @@ install_fail2ban() {
    	if [ -f /etc/fail2ban/jail.local ]; then
     		sudo rm /etc/fail2ban/jail.local
         fi
-	echo -e "${yellow}注意：默认设置的监控的端口为SSH端口22，未修改SSH端口!!!${nc}"
+	read -p "$(echo -e ${green}请输入SSH端口号:${nc})" port
  	echo
 	# 更新包列表并安装Fail2ban
 	sudo apt update
@@ -431,7 +432,7 @@ mta = sendmail
 #启用或禁用这个jail
 enabled = true
 #监控的端口
-port = ssh
+port = \${port}
 #指定Fail2ban使用的过滤器文件
 filter = sshd
 #指定Fail2ban监控的日志文件路径
@@ -470,6 +471,19 @@ uninstall_fail2ban(){
  	echo
   	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
 }
+#11.修改SSH端口
+update_ssh_port(){
+	read -p "$(echo -e ${yellow}输入新的SSH登录的端口号：${nc}) " port
+	# 定义新的SSH端口号
+	NEW_PORT=$port
+	# 修改SSH配置文件
+	sudo sed -i "s/^Port .*/Port $NEW_PORT/" /etc/ssh/sshd_config
+	# 重启SSH服务使更改生效
+	sudo systemctl restart sshd
+	echo -e "${yellow}$SSH端口已修改为 $NEW_PORT!!!${nc}"
+ 	echo
+   	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
+}
 
 main() {
 	# 主循环
@@ -488,6 +502,7 @@ main() {
   		8) install_fail2ban ;;
     		9) check_fail2ban_status ;;
       		10) uninstall_fail2ban ;;
+		11) update_ssh_port ;;
 		0)
 			echo -e "${blue}程序已退出...${nc}"
 			exit
