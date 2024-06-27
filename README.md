@@ -6,7 +6,7 @@
 * 生成GitLab私有仓库访问链接和二维码
 * 推送单个文件到GitLab私有仓库并生成访问链接和二维码
 * 安装并自动配置fail2ban
-* 查看fail2ban封禁ip情况
+* 查看fail2ban封禁IP情况
 * 卸载fail2ban
 * 修改SSH登录端口
 ```shell
