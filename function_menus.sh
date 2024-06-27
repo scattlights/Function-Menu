@@ -433,7 +433,7 @@ mta = sendmail
 #启用或禁用这个jail
 enabled = true
 #监控的端口
-port = \${port}
+port = ${port}
 #指定Fail2ban使用的过滤器文件
 filter = sshd
 #指定Fail2ban监控的日志文件路径
