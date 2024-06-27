@@ -410,7 +410,7 @@ install_fail2ban() {
 	sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 
 	# 配置Fail2ban
-	sudo bash -c 'cat > /etc/fail2ban/jail.local <<EOL
+	sudo bash -c "cat > /etc/fail2ban/jail.local <<EOL
 [DEFAULT]
 #定义哪些IP地址应该被忽略，不会被拉黑
 ignoreip = 127.0.0.1/8 192.168.1.0/24
@@ -440,7 +440,7 @@ filter = sshd
 logpath = /var/log/auth.log
 #在这个jail中，指定在findtime时间内允许的最大失败尝试次数
 maxretry = 5
-EOL'
+EOL"
 
 	# 启动并启用Fail2ban服务
 	sudo systemctl start fail2ban
