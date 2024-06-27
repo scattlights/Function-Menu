@@ -396,6 +396,7 @@ push_file_to_gitlab() {
 install_fail2ban() {
 	#停止fail2ban服务
  	sudo systemctl stop fail2ban
+   	sudo apt remove --purge fail2ban -y
   	#如果存在，删除本地配置文件
    	if [ -f /etc/fail2ban/jail.local ]; then
     		sudo rm /etc/fail2ban/jail.local
@@ -473,14 +474,14 @@ uninstall_fail2ban(){
 }
 #11.修改SSH端口
 update_ssh_port(){
-	read -p "$(echo -e ${yellow}输入新的SSH登录的端口号：${nc}) " port
+	read -p "$(echo -e ${green}输入新的SSH登录的端口号：${nc}) " port
 	# 定义新的SSH端口号
 	NEW_PORT=$port
 	# 修改SSH配置文件
 	sudo sed -i "s/^Port .*/Port $NEW_PORT/" /etc/ssh/sshd_config
 	# 重启SSH服务使更改生效
 	sudo systemctl restart sshd
-	echo -e "${yellow}$SSH端口已修改为 $NEW_PORT!!!${nc}"
+	echo -e "${yellow}$SSH端口已修改为$NEW_PORT!!!${nc}"
  	echo
    	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
 }
