@@ -30,6 +30,9 @@ else
 	echo -e "${red}不支持当前的系统，请选择使用Ubuntu,Debian,Centos系统。${nc}" && exit
 fi
 
+apt-get update
+apt-get install sudo
+
 #检查git包是否安装
 check_git_installation() {
 	if ! command -v git &>/dev/null; then
