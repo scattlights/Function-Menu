@@ -380,7 +380,7 @@ install_fail2ban() {
 #定义哪些IP地址应该被忽略，不会被拉黑
 ignoreip = 127.0.0.1/8 192.168.1.0/24
 #指定被拉黑IP的拉黑时长，单位为秒
-bantime  = 86400
+bantime  = 31622400
 #定义在多少秒内发生maxretry次失败尝试会导致拉黑
 findtime  = 600
 #指定在findtime时间内允许的最大失败尝试次数。超过这个次数，IP将被拉黑
