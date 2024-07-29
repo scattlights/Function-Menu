@@ -9,6 +9,7 @@
 * 查看fail2ban封禁IP情况
 * 卸载fail2ban
 * 修改SSH登录端口
+* 拉取GitLab私有仓库指定文件到本地
 ```shell
 bash <(curl -Ls https://raw.githubusercontent.com/just2so/MShell/main/function_menus.sh)
 ```
