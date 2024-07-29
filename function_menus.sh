@@ -160,6 +160,7 @@ main_menu() {
   	echo -e "${green}7. 查看fail2ban封禁ip情况${nc}"
    	echo -e "${green}8. 卸载fail2ban${nc}"
     	echo -e "${green}9. 修改SSH登录端口${nc}"
+        echo -e "${green}10. 拉取GitLab私有仓库指定文件到本地${nc}"
 	echo -e "${green}0. 退出${nc}"
 	echo -e "${yellow}==============================${nc}"
 }
@@ -450,6 +451,33 @@ update_ssh_port(){
  	echo
    	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
 }
+#10.拉取GitLab私有仓库指定文件到本地
+pull_the_specified_file_to_local(){
+	check_git_installation
+	# 清屏
+	clear
+	# 调用
+	gitlab_repo_info
+	# 配置Git全局用户信息
+	git config --global user.name "$user_name"
+	git config --global user.email "$user_name@example.com"
+	cd /usr
+	if [ -d $repo_name ]; then
+		rm -r $repo_name
+	fi
+	mkdir $repo_name
+	cd $repo_name
+	# 初始化本地仓库，指定初始化时创建的分支名和GitLab分支名一致
+	git init -b $branch_name
+	# 设置远程仓库
+	git remote add origin https://$user_name:$token@gitlab.com/$user_name/$repo_name.git
+ 	git config core.sparseCheckout true
+  	echo "acme_2.0.sh" >>.git/info/sparse-checkout
+   	git pull origin $branch_name
+    	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
+}
+	
+}
 
 main() {
 	# 主循环
@@ -467,6 +495,7 @@ main() {
     		7) check_fail2ban_status ;;
       		8) uninstall_fail2ban ;;
 		9) update_ssh_port ;;
+  		10) pull_the_specified_file_to_local ;;
 		0)
 			echo -e "${blue}程序已退出...${nc}"
 			exit
