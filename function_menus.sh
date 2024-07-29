@@ -476,8 +476,6 @@ pull_the_specified_file_to_local(){
    	git pull origin $branch_name
     	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
 }
-	
-}
 
 main() {
 	# 主循环
