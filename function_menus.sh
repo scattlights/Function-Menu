@@ -453,6 +453,7 @@ update_ssh_port(){
 }
 #10.拉取GitLab私有仓库指定文件到本地
 pull_the_specified_file_to_local(){
+	LOCAL_DIR="root"  # 本地目录名称
 	check_git_installation
 	# 清屏
 	clear
@@ -461,7 +462,8 @@ pull_the_specified_file_to_local(){
 	# 配置Git全局用户信息
 	git config --global user.name "$user_name"
 	git config --global user.email "$user_name@example.com"
-	cd /usr
+	cd /
+ 	cd $LOACL_DIR
 	if [ -d $repo_name ]; then
 		rm -r $repo_name
 	fi
@@ -472,8 +474,16 @@ pull_the_specified_file_to_local(){
 	# 设置远程仓库
 	git remote add origin https://$user_name:$token@gitlab.com/$user_name/$repo_name.git
  	git config core.sparseCheckout true
-  	echo "acme_2.0.sh" >>.git/info/sparse-checkout
+  	read -p "$(echo -e ${green}请输入需要拉取的包含路径的文件名称:${nc}) " file_path
+  	echo "$file_path" >>.git/info/sparse-checkout
    	git pull origin $branch_name
+    	# 检查拉取是否成功
+	if [ $? -eq 0 ]; then
+  		  echo -e "${yellow}文件已成功拉取到/$LOCAL_DIR/$repo_name/$file_path${nc}"
+	else
+   		 echo -e "${yellow}文件拉取失败${nc}"
+	fi
+ 	echo
     	read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
 }
 
