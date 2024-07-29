@@ -474,7 +474,7 @@ pull_the_specified_file_to_local(){
 	# 设置远程仓库
 	git remote add origin https://$user_name:$token@gitlab.com/$user_name/$repo_name.git
  	git config core.sparseCheckout true
-  	read -p "$(echo -e ${green}请输入需要拉取的包含路径的文件名称:${nc}) " file_path
+  	read -p "$(echo -e ${yellow}请输入需要拉取的包含路径的文件名称:${nc}) " file_path
   	echo "$file_path" >>.git/info/sparse-checkout
    	git pull origin $branch_name
     	# 检查拉取是否成功
@@ -488,6 +488,8 @@ pull_the_specified_file_to_local(){
 }
 
 main() {
+	# 清屏
+	clear
 	# 主循环
 	while true; do
 		main_menu
