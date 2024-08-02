@@ -1,5 +1,5 @@
 <h1 align="center">
-  Function
+  功能菜单
 </h1>
 
 <p align="center">
