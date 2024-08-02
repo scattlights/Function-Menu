@@ -3,8 +3,7 @@
 </h1>
 
 <p align="center">
- <a href="docs/README.en.md">English</a> | <a href="docs/README.es.md">Spanish</a> | <a href="docs/README.de.md">German</a> | 
-<a href="docs/README.fr.md">French</a> | <a href="README.md">简体中文</a> |  <a href="docs/README.ja.md">日本語</a> 
+ <a href="docs/README.en.md">English</a> | <a href="README.md">简体中文</a>  
 </p>
 
 * 显示系统信息
