@@ -1,5 +1,11 @@
+<h1 align="center">
+  Function
+</h1>
 
-# 功能菜单：
+<p align="center">
+ <a href="docs/README.en.md">English</a> | <a href="docs/README.es.md">Spanish</a> | <a href="docs/README.de.md">German</a> | 
+<a href="docs/README.fr.md">French</a> | <a href="README.md">简体中文</a> |  <a href="docs/README.ja.md">日本語</a> 
+</p>
 * 显示系统信息
 * 显示磁盘空间
 * 实时流量
