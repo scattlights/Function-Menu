@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
- <a href="README.md">English</a> | <a href="README.zh.md">简体中文</a>  
+ <a href="/README.md">English</a> | <a href="README.zh.md">简体中文</a>  
 </p>
 
 * 显示系统信息
