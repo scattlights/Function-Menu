@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
- <a href="docs/README.md">English</a> | <a href="/docs/README.zh.md">简体中文</a>  
+ <a href="README.md">English</a> | <a href="/docs/README.zh.md">简体中文</a>  
 </p>
 
 * Display system information
