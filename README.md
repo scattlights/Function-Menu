@@ -9,8 +9,8 @@
 * Display system information
 * Show disk space
 * Real-time traffic monitoring
-* Generate GitLab private repository access link and QR code
-* Push file to a GitLab private repository and generate access link and QR code
+* Generate GitLab private repository access link,QR code
+* Push file to a GitLab private repository,generate access link,QR code
 * Install and configure fail2ban automatically
 * View IPs banned by fail2ban
 * Uninstall fail2ban
