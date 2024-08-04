@@ -65,10 +65,17 @@ bit_to_human_readable() {
   local trafficValue=$1
   if [[ ${trafficValue%.*} -gt 922 ]]; then
     #转换成Kb
+<<<<<<< HEAD
     trafficValue=$(awk -v value="$trafficValue" 'BEGIN{printf "%0.1f",value/1024}')
     if [[ ${trafficValue%.*} -gt 922 ]]; then
       #转换成Mb
       trafficValue=$(awk -v value="$trafficValue" 'BEGIN{printf "%0.1f",value/1024}')
+=======
+    trafficValue=$(awk -v value=$trafficValue 'BEGIN{printf "%0.1f",value/1024}')
+    if [[ ${trafficValue%.*} -gt 922 ]]; then
+      #转换成Mb
+      trafficValue=$(awk -v value=$trafficValue 'BEGIN{printf "%0.1f",value/1024}')
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
       echo "${trafficValue}Mb"
     else
       echo "${trafficValue}Kb"
@@ -83,7 +90,11 @@ gitlab_repo_info() {
   check_git_installation
   while true; do
     #请输入用户名称
+<<<<<<< HEAD
     read -r -p "$(echo -e "${yellow}"请输入GitLab用户名称:"${nc}") " user_name
+=======
+    read -p "$(echo -e ${yellow}请输入GitLab用户名称:${nc}) " user_name
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
     # 检查字符串是否为空或者不包含空格
     if [ -z "$user_name" ] || [[ "$user_name" =~ [[:space:]] ]]; then
       echo -e "${red}输入不能为空或者不能包含空格,请重新输入...${nc}"
@@ -95,7 +106,11 @@ gitlab_repo_info() {
   done
   while true; do
     #请输入仓库名称
+<<<<<<< HEAD
     read -r -p "$(echo -e "${yellow}"请输入仓库名称:"${nc}") " repo_name
+=======
+    read -p "$(echo -e ${yellow}请输入仓库名称:${nc}) " repo_name
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
     # 检查字符串是否为空或者不包含空格
     if [ -z "$repo_name" ] || [[ "$repo_name" =~ [[:space:]] ]]; then
       echo -e "${red}输入不能为空或者不能包含空格,请重新输入...${nc}"
@@ -107,6 +122,7 @@ gitlab_repo_info() {
   done
   while true; do
     #请输入令牌
+<<<<<<< HEAD
     read -r -p "$(echo -e "${yellow}"请输入令牌:"${nc}") " token
     #操作符获取字符串长度
     length=${#token}
@@ -115,6 +131,16 @@ gitlab_repo_info() {
       echo -e "${red}1.重新输入${nc}"
       echo -e "${red}2.返回主菜单${nc}"
       read -r -p "" choice
+=======
+    read -p "$(echo -e ${yellow}请输入令牌:${nc}) " token
+    #操作符获取字符串长度
+    length=${#token}
+    if [ $length != 26 ]; then
+      echo -e "${red}令牌不合法:${nc}"
+      echo -e "${red}1.重新输入${nc}"
+      echo -e "${red}2.返回主菜单${nc}"
+      read -p "" choice
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
       case $choice in
       1)
         continue
@@ -133,7 +159,11 @@ gitlab_repo_info() {
   done
   while true; do
     #请输入分支名称
+<<<<<<< HEAD
     read -r -p "$(echo -e "${yellow}"请输入分支名称:"${nc}") " branch_name
+=======
+    read -p "$(echo -e ${yellow}请输入分支名称:${nc}) " branch_name
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
     # 检查字符串是否为空或者不包含空格
     if [ -z "$branch_name" ] || [[ "$branch_name" =~ [[:space:]] ]]; then
       echo -e "${red}输入不能为空或者不能包含空格,请重新输入...${nc}"
@@ -169,14 +199,22 @@ main_menu() {
 display_system_info() {
   echo "主机名称: $HOSTNAME"
   echo "运行时间：$(uptime)"
+<<<<<<< HEAD
   read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+=======
+  read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
 }
 
 # 选项2：显示磁盘空间
 display_disk_space() {
   echo "磁盘空间:"
   df -h
+<<<<<<< HEAD
   read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+=======
+  read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
 }
 
 # 选项3：实时流量
@@ -206,7 +244,11 @@ real_time_traffic() {
     # 设置终端属性，禁止按键显示
     stty -echo
     #检测到用户输入，就跳出循环
+<<<<<<< HEAD
     read -r -s -n 1 -t 0.1 key
+=======
+    read -s -n 1 -t 0.1 key
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
     if [[ $? -eq 0 ]]; then
       # 恢复终端属性
       stty echo
@@ -247,8 +289,12 @@ generate_gitlab_access_link() {
   gitlab_repo_info
   while true; do
     #请输入文件名称
+<<<<<<< HEAD
     # shellcheck disable=SC2162
     read -p "$(echo -e "${yellow}"请输入包含路径的文件名称:"${nc}") " file_name
+=======
+    read -p "$(echo -e ${yellow}请输入包含路径的文件名称:${nc}) " file_name
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
     # 检查字符串是否为空或者不包含空格
     if [ -z "$file_name" ] || [[ "$file_name" =~ [[:space:]] ]]; then
       echo -e "${red}输入不能为空或者不能包含空格,请重新输入...${nc}"
@@ -270,12 +316,20 @@ generate_gitlab_access_link() {
     #生成二维码,纠错级别为H
     qrencode -t ANSIUTF8 -l H "${link}"
     echo
+<<<<<<< HEAD
     read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+=======
+    read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
   else
     echo
     echo -e "${green}输入信息有误，链接无法访问，状态码为:${red}${response_code}${nc}"
     echo
+<<<<<<< HEAD
     read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+=======
+    read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
   fi
 }
 
@@ -290,6 +344,7 @@ push_file_to_gitlab() {
   # 配置Git全局用户信息
   git config --global user.name "$user_name"
   git config --global user.email "$user_name@example.com"
+<<<<<<< HEAD
   cd /usr || exit
   if [ -d "$repo_name" ]; then
     rm -r "$repo_name"
@@ -306,6 +361,23 @@ push_file_to_gitlab() {
     # 上传文件的路径
     # shellcheck disable=SC2162
     read -p "$(echo -e "${green}"请输入需要推送的包含路径的文件名称:"${nc}") " file_path
+=======
+  cd /usr
+  if [ -d $repo_name ]; then
+    rm -r $repo_name
+  fi
+  mkdir $repo_name
+  cd $repo_name
+  # 初始化本地仓库，指定初始化时创建的分支名和GitLab分支名一致
+  git init -b $branch_name
+  # 设置远程仓库
+  git remote add origin https://$user_name:$token@gitlab.com/$user_name/$repo_name.git
+  # 拉取最新
+  git pull origin $branch_name
+  while true; do
+    # 上传文件的路径
+    read -p "$(echo -e ${green}请输入需要推送的包含路径的文件名称:${nc}) " file_path
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
     # 当文件不存在
     if [ ! -f "$file_path" ]; then
       echo -e "${red}文件不存在,请重新输入...${nc}"
@@ -328,6 +400,7 @@ push_file_to_gitlab() {
     echo
     echo -e "${yellow}注意：GitLab仓库中存在同名文件,所以自动更改需要推送的文件名为:${new_file_name}${nc}"
     echo
+<<<<<<< HEAD
     cp "$file_path" /usr/"$repo_name"/"$new_file_name"
     # 添加文件
     git add "$new_file_name"
@@ -336,12 +409,26 @@ push_file_to_gitlab() {
     cp "$file_path" /usr/"$repo_name"/"$file_name"
     # 添加文件
     git add "$file_name"
+=======
+    cp $file_path /usr/$repo_name/$new_file_name
+    # 添加文件
+    git add $new_file_name
+    access_file_name=$new_file_name
+  else
+    cp $file_path /usr/$repo_name/$file_name
+    # 添加文件
+    git add $file_name
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
     access_file_name=$file_name
   fi
   # 提交
   git commit -m "初次提交"
   # 推送到远程仓库的指定分支
+<<<<<<< HEAD
   git push -u origin "$branch_name"
+=======
+  git push -u origin $branch_name
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
   # 检查命令执行结果
   if [ $? -eq 0 ]; then
     echo -e "${green}推送成功...${nc}"
@@ -350,7 +437,11 @@ push_file_to_gitlab() {
   fi
   # 删除本地仓库
   cd ..
+<<<<<<< HEAD
   rm -r "$repo_name"
+=======
+  rm -r $repo_name
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
   link="https://gitlab.com/api/v4/projects/${user_name}%2F${repo_name}/repository/files/${access_file_name}/raw?ref=${branch_name}&private_token=${token}"
   echo
   echo -e "${green}链接:${link}${nc}"
@@ -358,7 +449,11 @@ push_file_to_gitlab() {
   #生成二维码,纠错级别为H
   qrencode -t ANSIUTF8 -l H "${link}"
   echo
+<<<<<<< HEAD
   read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+=======
+  read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
 }
 #6.安装fail2ban
 install_fail2ban() {
@@ -369,7 +464,11 @@ install_fail2ban() {
   if [ -f /etc/fail2ban/jail.local ]; then
     sudo rm /etc/fail2ban/jail.local
   fi
+<<<<<<< HEAD
   read -r -p "$(echo -e "${green}"请输入SSH端口号:"${nc}")" port
+=======
+  read -p "$(echo -e ${green}请输入SSH端口号:${nc})" port
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
   echo
   # 更新包列表并安装Fail2ban
   sudo apt update
@@ -415,7 +514,11 @@ EOL"
   sudo systemctl enable fail2ban
   echo -e "${yellow}Fail2ban安装和配置完成。${nc}"
   echo
+<<<<<<< HEAD
   read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+=======
+  read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
 }
 #7.查看fail2ban状态
 check_fail2ban_status() {
@@ -423,12 +526,20 @@ check_fail2ban_status() {
   if ! command -v fail2ban-client >/dev/null 2>&1; then
     echo -e "${yellow}Fail2ban未安装。${nc}"
     echo
+<<<<<<< HEAD
     read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+=======
+    read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
   else
     sudo fail2ban-client status
     sudo fail2ban-client status sshd
     echo
+<<<<<<< HEAD
     read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+=======
+    read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
   fi
 }
 #8.卸载fail2ban
@@ -438,11 +549,19 @@ uninstall_fail2ban() {
   sudo apt remove --purge fail2ban -y
   echo -e "${yellow}Fail2ban已卸载。${nc}"
   echo
+<<<<<<< HEAD
   read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
 }
 #9.修改SSH端口
 update_ssh_port() {
   read -r -p "$(echo -e "${green}"输入新的SSH登录的端口号："${nc}") " port
+=======
+  read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
+}
+#9.修改SSH端口
+update_ssh_port() {
+  read -p "$(echo -e ${green}输入新的SSH登录的端口号：${nc}) " port
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
   # 定义新的SSH端口号
   NEW_PORT=$port
   # 修改SSH配置文件
@@ -451,7 +570,11 @@ update_ssh_port() {
   sudo systemctl restart sshd
   echo -e "${yellow}$SSH端口已修改为$NEW_PORT!!!${nc}"
   echo
+<<<<<<< HEAD
   read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+=======
+  read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
 }
 #10.拉取GitLab私有仓库指定文件到本地
 pull_the_specified_file_to_local() {
@@ -465,6 +588,7 @@ pull_the_specified_file_to_local() {
   git config --global user.name "$user_name"
   git config --global user.email "$user_name@example.com"
   cd /
+<<<<<<< HEAD
   cd "$LOACL_DIR" || exit
   if [ -d "$repo_name" ]; then
     rm -r "$repo_name"
@@ -480,6 +604,22 @@ pull_the_specified_file_to_local() {
   read -p "$(echo -e "${yellow}"请输入需要拉取的包含路径的文件名称:"${nc}") " file_path
   echo "$file_path" >>.git/info/sparse-checkout
   git pull origin "$branch_name"
+=======
+  cd $LOACL_DIR
+  if [ -d $repo_name ]; then
+    rm -r $repo_name
+  fi
+  mkdir $repo_name
+  cd $repo_name
+  # 初始化本地仓库，指定初始化时创建的分支名和GitLab分支名一致
+  git init -b $branch_name
+  # 设置远程仓库
+  git remote add origin https://$user_name:$token@gitlab.com/$user_name/$repo_name.git
+  git config core.sparseCheckout true
+  read -p "$(echo -e ${yellow}请输入需要拉取的包含路径的文件名称:${nc}) " file_path
+  echo "$file_path" >>.git/info/sparse-checkout
+  git pull origin $branch_name
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
   # 检查拉取是否成功
   if [ $? -eq 0 ]; then
     echo -e "${yellow}文件已成功拉取到/$LOCAL_DIR/$repo_name/$file_path${nc}"
@@ -487,7 +627,11 @@ pull_the_specified_file_to_local() {
     echo -e "${yellow}文件拉取失败${nc}"
   fi
   echo
+<<<<<<< HEAD
   read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+=======
+  read -p "$(echo -e ${blue}按回车键返回主菜单...${nc})"
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
 }
 
 
@@ -498,7 +642,11 @@ main() {
   while true; do
     main_menu
     #等待用户输入数字，可编辑数字，按回车确定
+<<<<<<< HEAD
     read -r -p "" choice
+=======
+    read -p "" choice
+>>>>>>> c0126538523d5a17801b066bf406cb0298ae53fc
     case $choice in
     1) display_system_info ;;
     2) display_disk_space ;;
