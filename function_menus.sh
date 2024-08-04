@@ -150,7 +150,6 @@ main_menu() {
   echo
   #控制台输出，-e开启转义字符
   echo -e "${yellow}==============================${nc}"
-  echo -e "${green}请输入你的选择，并按回车键确认:${nc}"
   echo -e "${green}1. 显示系统信息${nc}"
   echo -e "${green}2. 显示磁盘空间${nc}"
   echo -e "${green}3. 实时流量${nc}"
