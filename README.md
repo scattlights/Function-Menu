@@ -11,7 +11,7 @@
 * Real-time traffic monitoring
 * Generate GitLab private repository access link,QR code
 * Push file to a GitLab private repository,generate access link,QR code
-* Install and configure fail2ban automatically
+* Install,configure fail2ban automatically
 * View IPs banned by fail2ban
 * Uninstall fail2ban
 * Change SSH login port
