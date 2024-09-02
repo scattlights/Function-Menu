@@ -8,7 +8,6 @@
 
 * Display system information
 * Show disk space
-* Real-time traffic monitoring
 * Generate GitLab private repository access link,QR code
 * Push file to a GitLab private repository,generate access link,QR code
 * Install,configure fail2ban automatically
