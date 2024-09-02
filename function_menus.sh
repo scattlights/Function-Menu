@@ -421,8 +421,7 @@ pull_the_specified_file_to_local() {
 # 检查 Nginx 是否已安装
 check_nginx_installed() {
     if dpkg -l | grep -q '^ii  nginx '; then
-        echo -e "${green}Nginx 已经安装。${nc}"
-        exit 0
+        read -r -p "$(echo -e "${blue}"Nginx已存在，按回车键返回主菜单..."${nc}")"
     fi
 }
 # 10.安装Nginx
