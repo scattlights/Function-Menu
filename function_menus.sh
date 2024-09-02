@@ -12,22 +12,32 @@ nc='\033[0m'
 
 #判断操作系统
 declare -g release
-if [[ -f /etc/redhat-release ]]; then
-  release="Centos"
-elif cat /etc/issue | grep -q -E -i "debian"; then
-  release="Debian"
-elif cat /etc/issue | grep -q -E -i "ubuntu"; then
-  release="Ubuntu"
-elif cat /etc/issue | grep -q -E -i "centos|red hat|redhat"; then
-  release="Centos"
-elif cat /proc/version | grep -q -E -i "debian"; then
-  release="Debian"
-elif cat /proc/version | grep -q -E -i "ubuntu"; then
-  release="Ubuntu"
-elif cat /proc/version | grep -q -E -i "centos|red hat|redhat"; then
-  release="Centos"
+if [ -f /etc/os-release ]; then
+  . /etc/os-release
+  case "$ID" in
+    ubuntu)
+      release="Ubuntu"
+      ;;
+    debian)
+      release="Debian"
+      ;;
+    *)
+      echo -e "${red}不支持当前的系统。请使用 Debian 或 Ubuntu 系统。${nc}" && exit 1
+      ;;
+  esac
 else
-  echo -e "${red}不支持当前的系统，请选择使用Ubuntu,Debian,Centos系统。${nc}" && exit
+  # 旧版本系统的兼容性检测
+  if grep -q -E -i "debian" /etc/issue; then
+    release="Debian"
+  elif grep -q -E -i "ubuntu" /etc/issue; then
+    release="Ubuntu"
+  elif grep -q -E -i "debian" /proc/version; then
+    release="Debian"
+  elif grep -q -E -i "ubuntu" /proc/version; then
+    release="Ubuntu"
+  else
+    echo -e "${red}不支持当前的系统。请使用 Debian 或 Ubuntu 系统。${nc}" && exit 1
+  fi
 fi
 
 apt-get update
@@ -56,25 +66,6 @@ check_qrencode_installation() {
     else
       sudo yum install -y qrencode
     fi
-  fi
-}
-
-#带宽bit单位转换
-bit_to_human_readable() {
-  #输入比特值
-  local trafficValue=$1
-  if [[ ${trafficValue%.*} -gt 922 ]]; then
-    #转换成Kb
-    trafficValue=$(awk -v value="$trafficValue" 'BEGIN{printf "%0.1f",value/1024}')
-    if [[ ${trafficValue%.*} -gt 922 ]]; then
-      #转换成Mb
-      trafficValue=$(awk -v value="$trafficValue" 'BEGIN{printf "%0.1f",value/1024}')
-      echo "${trafficValue}Mb"
-    else
-      echo "${trafficValue}Kb"
-    fi
-  else
-    echo "${trafficValue}b"
   fi
 }
 
@@ -152,15 +143,14 @@ main_menu() {
   echo -e "${yellow}==============================${nc}"
   echo -e "${green}1. 显示系统信息${nc}"
   echo -e "${green}2. 显示磁盘空间${nc}"
-  echo -e "${green}3. 实时流量${nc}"
-  echo -e "${green}4. 生成GitLab私有仓库访问链接${nc}"
-  echo -e "${green}5. 推送单个文件到GitLab私有仓库并生成访问链接${nc}"
-  echo -e "${green}6. 安装并自动配置fail2ban${nc}"
-  echo -e "${green}7. 查看fail2ban封禁ip情况${nc}"
-  echo -e "${green}8. 卸载fail2ban${nc}"
-  echo -e "${green}9. 修改SSH登录端口${nc}"
-  echo -e "${green}10. 拉取GitLab私有仓库指定文件到本地${nc}"
-  echo -e "${green}0. 退出${nc}"
+  echo -e "${green}3. 生成GitLab私有仓库访问链接${nc}"
+  echo -e "${green}4. 推送单个文件到GitLab私有仓库并生成访问链接${nc}"
+  echo -e "${green}5. 安装并自动配置fail2ban${nc}"
+  echo -e "${green}6. 查看fail2ban封禁ip情况${nc}"
+  echo -e "${green}7. 卸载fail2ban${nc}"
+  echo -e "${green}8. 修改SSH登录端口${nc}"
+  echo -e "${green}9. 拉取GitLab私有仓库指定文件到本地${nc}"
+  echo -e "${green}10. 退出${nc}"
   echo -e "${yellow}==============================${nc}"
 }
 
@@ -176,68 +166,6 @@ display_disk_space() {
   echo "磁盘空间:"
   df -h
   read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
-}
-
-# 选项3：实时流量
-real_time_traffic() {
-  local eth=""
-  local nic_arr=($(ifconfig | grep -E -o "^[a-z0-9]+" | grep -v "lo" | uniq))
-  local nicLen=${#nic_arr[@]}
-  if [[ $nicLen -eq 0 ]]; then
-    echo "抱歉，无法检测到任何网络设备"
-    exit 1
-  elif [[ $nicLen -eq 1 ]]; then
-    eth=$nic_arr
-  else
-    main_menu nic
-    eth=$nic
-  fi
-  local clear=true
-  local eth_in_peak=0
-  local eth_out_peak=0
-  local eth_in=0
-  local eth_out=0
-  echo -e "${green}请稍等，实时流量显示时可以按任意键返回主菜单...${nc}"
-  sleep 2
-  # 禁止光标显示
-  tput civis
-  while true; do
-    # 设置终端属性，禁止按键显示
-    stty -echo
-    #检测到用户输入，就跳出循环
-    read -r -s -n 1 -t 0.1 key
-    if [[ $? -eq 0 ]]; then
-      # 恢复终端属性
-      stty echo
-      # 恢复光标显示
-      tput cnorm
-      #跳出循环
-      break
-    fi
-    #移动光标到0:0位置
-    printf "\033[0;0H"
-    #如果clear为true，先清屏并打印Now Peak
-    [[ $clear == true ]] && printf "\033[2J" && echo -e "${yellow}eth------Now--------Peak${nc}"
-    traffic_be=($(awk -v eth=$eth -F'[: ]+' '{if ($0 ~eth){print $3,$11}}' /proc/net/dev))
-    sleep 2
-    traffic_af=($(awk -v eth=$eth -F'[: ]+' '{if ($0 ~eth){print $3,$11}}' /proc/net/dev))
-    #计算速率
-    eth_in=$(((${traffic_af[0]} - ${traffic_be[0]}) * 8 / 2))
-    eth_out=$(((${traffic_af[1]} - ${traffic_be[1]}) * 8 / 2))
-    #计算流量峰值
-    [[ $eth_in -gt $eth_in_peak ]] && eth_in_peak=$eth_in
-    [[ $eth_out -gt $eth_out_peak ]] && eth_out_peak=$eth_out
-    #移动光标到2:1
-    printf "\033[2;1H"
-    #清除当前行
-    printf "\033[K"
-    printf "${green}%-20s %-20s${nc}\n" "接收:  $(bit_to_human_readable $eth_in)" "$(bit_to_human_readable $eth_in_peak)"
-    #清除当前行
-    printf "\033[K"
-    printf "${green}%-20s %-20s${nc}\n" "传输:  $(bit_to_human_readable $eth_out)" "$(bit_to_human_readable $eth_out_peak)"
-    #把true的值改为false
-    [[ $clear == true ]] && clear=false
-  done
 }
 
 #选项4：生成gitlab私有仓库访问链接
@@ -489,7 +417,6 @@ pull_the_specified_file_to_local() {
   read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
 }
 
-
 main() {
   # 清屏
   clear
@@ -501,15 +428,14 @@ main() {
     case $choice in
     1) display_system_info ;;
     2) display_disk_space ;;
-    3) real_time_traffic ;;
-    4) generate_gitlab_access_link ;;
-    5) push_file_to_gitlab ;;
-    6) install_fail2ban ;;
-    7) check_fail2ban_status ;;
-    8) uninstall_fail2ban ;;
-    9) update_ssh_port ;;
-    10) pull_the_specified_file_to_local ;;
-    0)
+    3) generate_gitlab_access_link ;;
+    4) push_file_to_gitlab ;;
+    5) install_fail2ban ;;
+    6) check_fail2ban_status ;;
+    7) uninstall_fail2ban ;;
+    8) update_ssh_port ;;
+    9) pull_the_specified_file_to_local ;;
+    10)
       echo -e "${blue}程序已退出...${nc}"
       exit
       ;;
