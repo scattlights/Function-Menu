@@ -150,7 +150,8 @@ main_menu() {
 	echo -e "${green}7. 卸载fail2ban${nc}"
 	echo -e "${green}8. 修改SSH登录端口${nc}"
 	echo -e "${green}9. 拉取GitLab私有仓库指定文件到本地${nc}"
-	echo -e "${green}10. 退出${nc}"
+ 	echo -e "${green}10. 安装Nginx${nc}"
+	echo -e "${green}0. 退出${nc}"
 	echo -e "${yellow}==============================${nc}"
 }
 
@@ -168,7 +169,7 @@ display_disk_space() {
 	read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
 }
 
-#选项4：生成gitlab私有仓库访问链接
+#选项3：生成gitlab私有仓库访问链接
 generate_gitlab_access_link() {
 	check_qrencode_installation
 	gitlab_repo_info
@@ -206,7 +207,7 @@ generate_gitlab_access_link() {
 	fi
 }
 
-#选项5：推送单个文件到gitlab私有仓库，并生成访问链接
+#选项4：推送单个文件到gitlab私有仓库，并生成访问链接
 push_file_to_gitlab() {
 	check_git_installation
 	check_qrencode_installation
@@ -287,7 +288,7 @@ push_file_to_gitlab() {
 	echo
 	read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
 }
-#6.安装fail2ban
+#5.安装fail2ban
 install_fail2ban() {
 	#停止fail2ban服务
 	sudo systemctl stop fail2ban
@@ -344,7 +345,7 @@ EOL"
 	echo
 	read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
 }
-#7.查看fail2ban状态
+#6.查看fail2ban状态
 check_fail2ban_status() {
 	# 检查命令是否存在
 	if ! command -v fail2ban-client >/dev/null 2>&1; then
@@ -358,7 +359,7 @@ check_fail2ban_status() {
 		read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
 	fi
 }
-#8.卸载fail2ban
+#7.卸载fail2ban
 uninstall_fail2ban() {
 	sudo systemctl stop fail2ban
 	sudo rm -rf /etc/fail2ban/jail.local
@@ -367,7 +368,7 @@ uninstall_fail2ban() {
 	echo
 	read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
 }
-#9.修改SSH端口
+#8.修改SSH端口
 update_ssh_port() {
 	read -r -p "$(echo -e "${green}"输入新的SSH登录的端口号："${nc}") " port
 	# 定义新的SSH端口号
@@ -380,7 +381,7 @@ update_ssh_port() {
 	echo
 	read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
 }
-#10.拉取GitLab私有仓库指定文件到本地
+#9.拉取GitLab私有仓库指定文件到本地
 pull_the_specified_file_to_local() {
 	LOCAL_DIR="root" # 本地目录名称
 	check_git_installation
@@ -417,6 +418,37 @@ pull_the_specified_file_to_local() {
 	read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
 }
 
+# 检查 Nginx 是否已安装
+check_nginx_installed() {
+    if dpkg -l | grep -q '^ii  nginx '; then
+        echo -e "${green}Nginx 已经安装。${nc}"
+        exit 0
+    fi
+}
+# 10.安装Nginx
+install_nginx() {
+    clear
+    check_nginx_installed
+    echo "正在安装 Nginx..."
+
+    # 更新包列表
+    sudo apt update
+
+    # 安装 Nginx
+    sudo apt install -y nginx
+
+    # 启动 Nginx 服务
+    sudo systemctl start nginx
+
+    # 设置 Nginx 开机自启动
+    sudo systemctl enable nginx
+
+    echo 
+    read -r -p "$(echo -e "${blue}"}Nginx安装并启动成功，按回车键返回主菜单..."${nc}")"
+}
+  	
+ 	
+
 main() {
 	# 清屏
 	clear
@@ -435,7 +467,8 @@ main() {
 		7) uninstall_fail2ban ;;
 		8) update_ssh_port ;;
 		9) pull_the_specified_file_to_local ;;
-		10)
+  		10) install_nginx ;;
+		0)
 			echo -e "${blue}程序已退出...${nc}"
 			exit
 			;;
