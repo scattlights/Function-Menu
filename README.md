@@ -15,6 +15,7 @@
 * Uninstall fail2ban
 * Change SSH login port
 * Pull a specific file from a GitLab private repository to local
+* Install Nginx
   
 ```shell
 bash <(curl -Ls https://raw.githubusercontent.com/just2so/MShell/main/function_menus.sh)
