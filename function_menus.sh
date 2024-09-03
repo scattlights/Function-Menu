@@ -178,7 +178,7 @@ generate_gitlab_access_link() {
 	while true; do
 		#请输入文件名称
 		# shellcheck disable=SC2162
-		read -p "$(echo -e "${yellow}"请输入包含路径的文件名称,当前在"/"路径下:"${nc}") " file_name
+		read -p "$(echo -e "${yellow}"请输入包含路径的文件名称,当前路径: / :"${nc}") " file_name
 		# 检查字符串是否为空或者不包含空格
 		if [ -z "$file_name" ] || [[ "$file_name" =~ [[:space:]] ]]; then
 			echo -e "${red}输入不能为空或者不能包含空格,请重新输入...${nc}"
