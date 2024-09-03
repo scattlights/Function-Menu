@@ -178,7 +178,7 @@ generate_gitlab_access_link() {
 	while true; do
 		#请输入文件名称
 		# shellcheck disable=SC2162
-		read -p "$(echo -e "${yellow}"请输入包含路径的文件名称:"${nc}") " file_name
+		read -p "$(echo -e "${yellow}"请输入包含路径的文件名称,当前在"/"路径下:"${nc}") " file_name
 		# 检查字符串是否为空或者不包含空格
 		if [ -z "$file_name" ] || [[ "$file_name" =~ [[:space:]] ]]; then
 			echo -e "${red}输入不能为空或者不能包含空格,请重新输入...${nc}"
@@ -188,7 +188,9 @@ generate_gitlab_access_link() {
 		#输入合法，则跳出循环
 		break
 	done
-	link="https://gitlab.com/api/v4/projects/${user_name}%2F${repo_name}/repository/files/${file_name}/raw?ref=${branch_name}&private_token=${token}"
+ 	# 替换 '/' 为 '%2F'
+	file_name_encoded=$(echo "$file_name" | sed 's/\//%2F/g')
+	link="https://gitlab.com/api/v4/projects/${user_name}%2F${repo_name}/repository/files/${file_name_encoded}/raw?ref=${branch_name}&private_token=${token}"
 
 	# 发送HEAD请求，检查状态码
 	response_code=$(curl --silent --head --output /dev/null --write-out "%{http_code}" "$link")
