@@ -22,7 +22,7 @@ if [ -f /etc/os-release ]; then
 		release="Debian"
 		;;
 	*)
-		echo -e "${red}不支持当前的系统。请使用 Debian 或 Ubuntu 系统。${nc}" && exit 1
+		echo -e "${red}不支持当前的系统,请使用Debian系统或Ubuntu系统。${nc}" && exit 1
 		;;
 	esac
 else
@@ -36,7 +36,7 @@ else
 	elif grep -q -E -i "ubuntu" /proc/version; then
 		release="Ubuntu"
 	else
-		echo -e "${red}不支持当前的系统。请使用 Debian 或 Ubuntu 系统。${nc}" && exit 1
+		echo -e "${red}不支持当前的系统，请使用Debian系统或Ubuntu系统。${nc}" && exit 1
 	fi
 fi
 
