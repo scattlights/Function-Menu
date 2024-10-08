@@ -14,7 +14,7 @@
 * View IPs banned by fail2ban
 * Uninstall fail2ban
 * Change SSH login port
-* Pull a specific file from a GitLab private repository to local
+* Pull a specific file from a GitLab private repository
 * Install Nginx
 * Uninstall Nginx
   
