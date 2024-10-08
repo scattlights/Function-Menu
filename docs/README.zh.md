@@ -14,7 +14,7 @@
 * 查看fail2ban封禁IP情况
 * 卸载fail2ban
 * 修改SSH登录端口
-* 拉取GitLab私有仓库指定文件到本地
+* 拉取GitLab私有仓库指定文件
 * 安装Nginx
 * 卸载Nginx
 ```shell
