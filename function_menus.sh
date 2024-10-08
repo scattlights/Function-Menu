@@ -149,7 +149,7 @@ main_menu() {
 	echo -e "${green}6. 查看fail2ban封禁ip情况${nc}"
 	echo -e "${green}7. 卸载fail2ban${nc}"
 	echo -e "${green}8. 修改SSH登录端口${nc}"
-	echo -e "${green}9. 拉取GitLab私有仓库指定文件到本地${nc}"
+	echo -e "${green}9. 拉取GitLab私有仓库指定文件${nc}"
 	echo -e "${green}10. 安装Nginx${nc}"
 	echo -e "${green}11. 卸载Nginx${nc}"
 	echo -e "${green}0. 退出${nc}"
@@ -389,9 +389,9 @@ update_ssh_port() {
 	echo
 	read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
 }
-#9.拉取GitLab私有仓库指定文件到本地
-pull_the_specified_file_to_local() {
-	LOCAL_DIR="root" # 本地目录名称
+#9.拉取GitLab私有仓库指定文件
+pull_the_specified_file() {
+	LOCAL_DIR="root" # 本目录名称
 	check_git_installation
 	# 清屏
 	clear
@@ -510,7 +510,7 @@ main() {
 		6) check_fail2ban_status ;;
 		7) uninstall_fail2ban ;;
 		8) update_ssh_port ;;
-		9) pull_the_specified_file_to_local ;;
+		9) pull_the_specified_file ;;
 		10) install_nginx ;;
 		11) uninstall_nginx ;;
 		0)
