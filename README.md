@@ -17,6 +17,7 @@
 * Pull a specific file from the GitLab private repository
 * Install Nginx
 * Uninstall Nginx
+* update
   
 ```shell
 bash <(curl -Ls https://raw.githubusercontent.com/just2so/MShell/main/function_menus.sh)
