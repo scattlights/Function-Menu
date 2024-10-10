@@ -452,14 +452,14 @@ install_nginx() {
 	sudo systemctl enable nginx
 
 	echo
-	read -r -p "$(echo -e "${blue}"}Nginx安装并启动成功，按回车键返回主菜单..."${nc}")"
+	read -r -p "$(echo -e "${blue}"Nginx安装并启动成功，按回车键返回主菜单..."${nc}")"
 }
 # 11.卸载Nginx
 uninstall_nginx() {
 	clear
 	# 检查 Nginx 是否已安装
 	if dpkg -l | grep -q '^ii  nginx'; then
-		echo -e "${GREEN}Nginx 已安装。正在卸载...${NC}"
+		echo -e "${GREEN}Nginx 已安装，正在卸载...${NC}"
 
 		# 停止 Nginx 服务
 		echo "停止 Nginx 服务..."
@@ -488,9 +488,9 @@ uninstall_nginx() {
 		# 删除所有残留的 Nginx 文件
 		echo "删除所有残留的 Nginx 文件..."
 		find / -name '*nginx*' -exec rm -rf {} + 2>/dev/null
-		read -r -p "$(echo -e "${blue}"}Nginx已成功卸载并删除所有相关文件，按回车键返回主菜单..."${nc}")"
+		read -r -p "$(echo -e "${blue}"Nginx已成功卸载并删除所有相关文件，按回车键返回主菜单..."${nc}")"
 	else
-		read -r -p "$(echo -e "${blue}"}Nginx未安装，按回车键返回主菜单..."${nc}")"
+		read -r -p "$(echo -e "${blue}"Nginx未安装，按回车键返回主菜单..."${nc}")"
 	fi
 }
 
@@ -505,7 +505,7 @@ update() {
     sudo apt full-upgrade -y
     # 自动清理不再需要的包
     sudo apt autoremove -y
-    read -r -p "$(echo -e "${blue}"}已完成更新，按回车键返回主菜单..."${nc}")"
+    read -r -p "$(echo -e "${blue}"已完成更新，按回车键返回主菜单..."${nc}")"
 }
 
 main() {
