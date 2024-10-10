@@ -1,5 +1,5 @@
 <h1 align="center">
-  Feature Menu
+  Function Menu
 </h1>
 
 <p align="center">
