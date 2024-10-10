@@ -17,6 +17,7 @@
 * 拉取GitLab私有仓库指定文件
 * 安装Nginx
 * 卸载Nginx
+* 更新
 ```shell
 bash <(curl -Ls https://raw.githubusercontent.com/just2so/MShell/main/function_menus.sh)
 ```
