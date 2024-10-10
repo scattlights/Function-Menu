@@ -152,6 +152,7 @@ main_menu() {
 	echo -e "${green}9. 拉取GitLab私有仓库指定文件${nc}"
 	echo -e "${green}10. 安装Nginx${nc}"
 	echo -e "${green}11. 卸载Nginx${nc}"
+ 	echo -e "${green}12. 软件更新${nc}"
 	echo -e "${green}0. 退出${nc}"
 	echo -e "${yellow}==============================${nc}"
 }
@@ -493,6 +494,20 @@ uninstall_nginx() {
 	fi
 }
 
+# 12.软件更新
+update() {
+    clear
+    # 更新软件包列表
+    sudo apt update -y
+    # 升级所有已安装的软件包
+    sudo apt upgrade -y
+    # 全系统升级
+    sudo apt full-upgrade -y
+    # 自动清理不再需要的包
+    sudo apt autoremove -y
+    read -r -p "$(echo -e "${blue}"}已完成更新，按回车键返回主菜单..."${nc}")"
+}
+
 main() {
 	# 清屏
 	clear
@@ -513,6 +528,7 @@ main() {
 		9) pull_the_specified_file ;;
 		10) install_nginx ;;
 		11) uninstall_nginx ;;
+                12) update ;;
 		0)
 			echo -e "${blue}程序已退出...${nc}"
 			exit
