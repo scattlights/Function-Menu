@@ -18,6 +18,7 @@
 * 安装Nginx
 * 卸载Nginx
 * 更新
+* 使用UFW防火墙开放特定端口
 ```shell
 bash <(curl -Ls https://raw.githubusercontent.com/just2so/MShell/main/function_menus.sh)
 ```
