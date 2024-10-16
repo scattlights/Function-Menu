@@ -152,7 +152,8 @@ main_menu() {
 	echo -e "${green}9. 拉取GitLab私有仓库指定文件${nc}"
 	echo -e "${green}10. 安装Nginx${nc}"
 	echo -e "${green}11. 卸载Nginx${nc}"
- 	echo -e "${green}12. 软件更新${nc}"
+	echo -e "${green}12. 软件更新${nc}"
+	echo -e "${green}13. 使用UFW防火墙开放指定端口${nc}"
 	echo -e "${green}0. 退出${nc}"
 	echo -e "${yellow}==============================${nc}"
 }
@@ -189,7 +190,7 @@ generate_gitlab_access_link() {
 		#输入合法，则跳出循环
 		break
 	done
- 	# 替换 '/' 为 '%2F'
+	# 替换 '/' 为 '%2F'
 	file_name_encoded=$(echo "$file_name" | sed 's/\//%2F/g')
 	link="https://gitlab.com/api/v4/projects/${user_name}%2F${repo_name}/repository/files/${file_name_encoded}/raw?ref=${branch_name}&private_token=${token}"
 
@@ -496,16 +497,62 @@ uninstall_nginx() {
 
 # 12.软件更新
 update() {
-    clear
-    # 更新软件包列表
-    sudo apt update -y
-    # 升级所有已安装的软件包
-    sudo apt upgrade -y
-    # 全系统升级
-    sudo apt full-upgrade -y
-    # 自动清理不再需要的包
-    sudo apt autoremove -y
-    read -r -p "$(echo -e "${blue}"已完成更新，按回车键返回主菜单..."${nc}")"
+	clear
+	# 更新软件包列表
+	sudo apt update -y
+	# 升级所有已安装的软件包
+	sudo apt upgrade -y
+	# 全系统升级
+	sudo apt full-upgrade -y
+	# 自动清理不再需要的包
+	sudo apt autoremove -y
+	read -r -p "$(echo -e "${blue}"已完成更新，按回车键返回主菜单..."${nc}")"
+}
+
+# 13.使用UFW开放指定端口
+open_prot() {
+	clear
+	# 更新软件包列表
+	sudo apt update
+
+	# 检查 UFW 是否已安装
+	if ! command -v ufw &>/dev/null; then
+		echo "UFW 未安装，正在安装..."
+		sudo apt install -y ufw
+	fi
+
+	# 检查 UFW 是否已启用
+	if [[ $(sudo ufw status | grep -c "active") -eq 1 ]]; then
+		echo "UFW 已安装并启用，当前已开放的端口："
+		sudo ufw status
+		echo "你可以直接添加新的端口。"
+	else
+		echo "UFW 已安装但未启用。"
+	fi
+
+	# 读取用户输入的端口，并检查格式
+	while true; do
+		read -p "请输入需要开放的端口（用英文逗号分隔，例如 22,80,443）： " ports
+		if [[ $ports =~ ^[0-9]+(,[0-9]+)*$ ]]; then
+			break
+		else
+			echo "输入格式错误，请使用英文逗号分隔端口。"
+		fi
+	done
+
+	# 开放输入的端口
+	for port in $(echo $ports | tr ',' ' '); do
+		sudo ufw allow $port
+	done
+
+	# 启用UFW（如果未启用）
+	if [[ $(sudo ufw status | grep -c "inactive") -eq 1 ]]; then
+		sudo ufw enable
+	fi
+
+	# 查看UFW状态
+	sudo ufw status
+	read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
 }
 
 main() {
@@ -528,7 +575,8 @@ main() {
 		9) pull_the_specified_file ;;
 		10) install_nginx ;;
 		11) uninstall_nginx ;;
-                12) update ;;
+		12) update ;;
+		13) open_port ;;
 		0)
 			echo -e "${blue}程序已退出...${nc}"
 			exit
