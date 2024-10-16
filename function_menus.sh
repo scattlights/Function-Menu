@@ -510,7 +510,7 @@ update() {
 }
 
 # 13.使用UFW开放指定端口
-open_prot() {
+open_port() {
 	clear
 	# 更新软件包列表
 	sudo apt update
