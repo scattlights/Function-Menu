@@ -75,7 +75,7 @@ check_git_installation() {
 #检查qrencode包是否安装
 check_qrencode_installation() {
 	if ! command -v qrencode &>/dev/null; then
-		echo -e "${yellow}正在安装Qrencode...${nc}"
+		yellow "正在安装Qrencode..."
 		if [[ "$release" == "Debian" || "$release" == "Ubuntu" ]]; then
 			sudo apt update
 			sudo apt install qrencode -y
@@ -90,7 +90,7 @@ gitlab_repo_info() {
 	check_git_installation
 	while true; do
 		#请输入用户名称
-		read -r -p "$(echo -e "${yellow}"请输入GitLab用户名称:"${nc}") " user_name
+		read -r -p "$(yellow 请输入GitLab用户名称:)" user_name
 		# 检查字符串是否为空或者不包含空格
 		if [ -z "$user_name" ] || [[ "$user_name" =~ [[:space:]] ]]; then
 			red "输入不能为空或者不能包含空格，请重新输入" 
@@ -102,7 +102,7 @@ gitlab_repo_info() {
 	done
 	while true; do
 		#请输入仓库名称
-		read -r -p "$(echo -e "${yellow}"请输入仓库名称:"${nc}") " repo_name
+		read -r -p "$(yellow 请输入仓库名称:)" repo_name
 		# 检查字符串是否为空或者不包含空格
 		if [ -z "$repo_name" ] || [[ "$repo_name" =~ [[:space:]] ]]; then
 			red "输入不能为空或者不能包含空格，请重新输入" 
@@ -114,13 +114,14 @@ gitlab_repo_info() {
 	done
 	while true; do
 		#请输入令牌
-		read -r -p "$(echo -e "${yellow}"请输入令牌:"${nc}") " token
+		read -r -p "$(yellow 请输入令牌:)" token
 		#操作符获取字符串长度
 		length=${#token}
 		if [ "$length" != 26 ]; then
-			echo -e "${red}令牌不合法:${nc}"
-			echo -e "${red}1.重新输入${nc}"
-			echo -e "${red}2.返回主菜单${nc}"
+			red "令牌不合法:"
+			red "1. 重新输入"
+			red "2. 返回主菜单"
+
 			read -r -p "" choice
 			case $choice in
 			1)
@@ -140,7 +141,7 @@ gitlab_repo_info() {
 	done
 	while true; do
 		#请输入分支名称
-		read -r -p "$(echo -e "${yellow}"请输入分支名称:"${nc}") " branch_name
+		read -r -p "$(yellow 请输入分支名称:)" branch_name
 		# 检查字符串是否为空或者不包含空格
 		if [ -z "$branch_name" ] || [[ "$branch_name" =~ [[:space:]] ]]; then
 			red "输入不能为空或者不能包含空格，请重新输入" 
@@ -221,7 +222,7 @@ generate_gitlab_access_link() {
 		read -r -p "$(blue "按回车键返回主菜单...")"
 	else
 		echo
-		echo -e "$(green "输入信息有误，链接无法访问，状态码为: ")${red}${response_code}${nc}"
+		green "输入信息有误，链接无法访问，状态码为: "; red "${response_code}"
 		echo
 		read -r -p "$(blue "按回车键返回主菜单...")"
 	fi
@@ -429,7 +430,7 @@ pull_the_specified_file() {
 	git remote add origin https://"$user_name":"$token"@gitlab.com/"$user_name"/"$repo_name".git
 	git config core.sparseCheckout true
 	# shellcheck disable=SC2162
-	read -p "$(echo -e "${yellow}"请输入需要拉取的包含路径的文件名称:"${nc}") " file_path
+	read -p "$(yellow "请输入需要拉取的包含路径的文件名称:") " file_path
 	echo "$file_path" >>.git/info/sparse-checkout
 	git pull origin "$branch_name"
 	# 检查拉取是否成功
