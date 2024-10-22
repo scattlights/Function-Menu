@@ -8,6 +8,22 @@ blue='\033[0;36m'
 #无颜色
 nc='\033[0m'
 
+red() {
+    echo -e "${red}$1${nc}"
+}
+
+green() {
+    echo -e "${green}$1${nc}"
+}
+
+yellow() {
+    echo -e "${yellow}$1${nc}"
+}
+
+blue() {
+    echo -e "${blue}$1${nc}"
+}
+
 [[ $EUID -ne 0 ]] && echo -e "${red}请以root模式运行脚本${nc}" && exit
 
 #判断操作系统
@@ -22,7 +38,7 @@ if [ -f /etc/os-release ]; then
 		release="Debian"
 		;;
 	*)
-		echo -e "${red}不支持当前的系统,请使用Debian系统或Ubuntu系统。${nc}" && exit 1
+		red "不支持当前的系统，请使用Debian系统或Ubuntu系统" && exit 1
 		;;
 	esac
 else
@@ -36,7 +52,7 @@ else
 	elif grep -q -E -i "ubuntu" /proc/version; then
 		release="Ubuntu"
 	else
-		echo -e "${red}不支持当前的系统，请使用Debian系统或Ubuntu系统。${nc}" && exit 1
+		red "不支持当前的系统，请使用Debian系统或Ubuntu系统" && exit 1
 	fi
 fi
 
@@ -46,7 +62,7 @@ apt-get install sudo
 #检查git包是否安装
 check_git_installation() {
 	if ! command -v git &>/dev/null; then
-		echo -e "${yellow}正在安装Git...${nc}"
+		yellow "正在安装 Git..."
 		if [[ "$release" == "Debian" || "$release" == "Ubuntu" ]]; then
 			sudo apt update
 			sudo apt install git -y
@@ -77,7 +93,7 @@ gitlab_repo_info() {
 		read -r -p "$(echo -e "${yellow}"请输入GitLab用户名称:"${nc}") " user_name
 		# 检查字符串是否为空或者不包含空格
 		if [ -z "$user_name" ] || [[ "$user_name" =~ [[:space:]] ]]; then
-			echo -e "${red}输入不能为空或者不能包含空格,请重新输入...${nc}"
+			red "输入不能为空或者不能包含空格，请重新输入" 
 			echo
 			continue
 		fi
@@ -89,7 +105,7 @@ gitlab_repo_info() {
 		read -r -p "$(echo -e "${yellow}"请输入仓库名称:"${nc}") " repo_name
 		# 检查字符串是否为空或者不包含空格
 		if [ -z "$repo_name" ] || [[ "$repo_name" =~ [[:space:]] ]]; then
-			echo -e "${red}输入不能为空或者不能包含空格,请重新输入...${nc}"
+			red "输入不能为空或者不能包含空格，请重新输入" 
 			echo
 			continue
 		fi
@@ -114,7 +130,7 @@ gitlab_repo_info() {
 				return
 				;;
 			*)
-				echo -e "${red}无效的选择...${nc}"
+				red "无效的选择"
 				continue
 				;;
 			esac
@@ -127,7 +143,7 @@ gitlab_repo_info() {
 		read -r -p "$(echo -e "${yellow}"请输入分支名称:"${nc}") " branch_name
 		# 检查字符串是否为空或者不包含空格
 		if [ -z "$branch_name" ] || [[ "$branch_name" =~ [[:space:]] ]]; then
-			echo -e "${red}输入不能为空或者不能包含空格,请重新输入...${nc}"
+			red "输入不能为空或者不能包含空格，请重新输入" 
 			echo
 			continue
 		fi
@@ -136,40 +152,38 @@ gitlab_repo_info() {
 	done
 }
 
-# 主菜单函数
 main_menu() {
 	echo
-	#控制台输出，-e开启转义字符
-	echo -e "${yellow}==============================${nc}"
-	echo -e "${green}1. 显示系统信息${nc}"
-	echo -e "${green}2. 显示磁盘空间${nc}"
-	echo -e "${green}3. 生成GitLab私有仓库访问链接${nc}"
-	echo -e "${green}4. 推送单个文件到GitLab私有仓库并生成访问链接${nc}"
-	echo -e "${green}5. 安装并自动配置fail2ban${nc}"
-	echo -e "${green}6. 查看fail2ban封禁ip情况${nc}"
-	echo -e "${green}7. 卸载fail2ban${nc}"
-	echo -e "${green}8. 修改SSH登录端口${nc}"
-	echo -e "${green}9. 拉取GitLab私有仓库指定文件${nc}"
-	echo -e "${green}10. 安装Nginx${nc}"
-	echo -e "${green}11. 卸载Nginx${nc}"
-	echo -e "${green}12. 软件更新${nc}"
-	echo -e "${green}13. 使用UFW防火墙开放指定端口${nc}"
-	echo -e "${green}0. 退出${nc}"
-	echo -e "${yellow}==============================${nc}"
+	yellow "=============================="
+	green "1. 显示系统信息"
+	green "2. 显示磁盘空间"
+	green "3. 生成 GitLab 私有仓库访问链接"
+	green "4. 推送单个文件到 GitLab 私有仓库并生成访问链接"
+	green "5. 安装并自动配置 fail2ban"
+	green "6. 查看 fail2ban 封禁 ip 情况"
+	green "7. 卸载 fail2ban"
+	green "8. 修改 SSH 登录端口"
+	green "9. 拉取 GitLab 私有仓库指定文件"
+	green "10. 安装 Nginx"
+	green "11. 卸载 Nginx"
+	green "12. 软件更新"
+	green "13. 使用 UFW 防火墙开放指定端口"
+	green "0. 退出"
+	yellow "=============================="
 }
 
 # 选项1：显示系统信息
 display_system_info() {
 	echo "主机名称: $HOSTNAME"
 	echo "运行时间：$(uptime)"
-	read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+	read -r -p "$(blue "按回车键返回主菜单...")"
 }
 
 # 选项2：显示磁盘空间
 display_disk_space() {
 	echo "磁盘空间:"
 	df -h
-	read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+	read -r -p "$(blue "按回车键返回主菜单...")"
 }
 
 #选项3：生成gitlab私有仓库访问链接
@@ -180,10 +194,10 @@ generate_gitlab_access_link() {
 	while true; do
 		#请输入文件名称
 		# shellcheck disable=SC2162
-		read -p "$(echo -e "${yellow}"请输入包含路径的文件名称,当前路径: / :"${nc}") " file_name
+		read -p "$(yellow "请输入包含路径的文件名称, 当前路径: / :") " file_name
 		# 检查字符串是否为空或者不包含空格
 		if [ -z "$file_name" ] || [[ "$file_name" =~ [[:space:]] ]]; then
-			echo -e "${red}输入不能为空或者不能包含空格,请重新输入...${nc}"
+			red "输入不能为空或者不能包含空格，请重新输入"
 			echo
 			continue
 		fi
@@ -199,17 +213,17 @@ generate_gitlab_access_link() {
 
 	if [ "$response_code" -eq 200 ]; then
 		echo
-		echo -e "${green}链接已生成，可以正常访问:${link}${nc}"
+		green "链接已生成，可以正常访问: ${link}"
 		echo
 		#生成二维码,纠错级别为H
 		qrencode -t ANSIUTF8 -l H "${link}"
 		echo
-		read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+		read -r -p "$(blue "按回车键返回主菜单...")"
 	else
 		echo
-		echo -e "${green}输入信息有误，链接无法访问，状态码为:${red}${response_code}${nc}"
+		echo -e "$(green "输入信息有误，链接无法访问，状态码为: ")${red}${response_code}${nc}"
 		echo
-		read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+		read -r -p "$(blue "按回车键返回主菜单...")"
 	fi
 }
 
@@ -235,14 +249,14 @@ push_file_to_gitlab() {
 	# 设置远程仓库
 	git remote add origin https://"$user_name":"$token"@gitlab.com/"$user_name"/"$repo_name".git
 	# 拉取最新
-	git pull origin "$branch_name"
+ 	git pull origin "$BRANCH_NAME" --no-rebase
 	while true; do
 		# 上传文件的路径
 		# shellcheck disable=SC2162
-		read -p "$(echo -e "${green}"请输入需要推送的包含路径的文件名称:"${nc}") " file_path
+		read -p "$(green "请输入需要推送的包含路径的文件名称:") " file_path
 		# 当文件不存在
 		if [ ! -f "$file_path" ]; then
-			echo -e "${red}文件不存在,请重新输入...${nc}"
+		red "文件不存在，请重新输入"
 			continue
 		else
 			break
@@ -260,7 +274,7 @@ push_file_to_gitlab() {
 	# 如果GitLab仓库中存在同名文件，则自动重新命名要推送的文件
 	if [ -f "$repo_file_path" ]; then
 		echo
-		echo -e "${yellow}注意：GitLab仓库中存在同名文件,所以自动更改需要推送的文件名为:${new_file_name}${nc}"
+		yellow "注意：GitLab 仓库中存在同名文件，所以自动更改需要推送的文件名为: ${new_file_name}"
 		echo
 		cp "$file_path" /usr/"$repo_name"/"$new_file_name"
 		# 添加文件
@@ -278,21 +292,21 @@ push_file_to_gitlab() {
 	git push -u origin "$branch_name"
 	# 检查命令执行结果
 	if [ $? -eq 0 ]; then
-		echo -e "${green}推送成功...${nc}"
+		green "推送成功"
 	else
-		echo -e "${green}推送失败...${nc}"
+		green "推送失败"
 	fi
 	# 删除本地仓库
 	cd ..
 	rm -r "$repo_name"
 	link="https://gitlab.com/api/v4/projects/${user_name}%2F${repo_name}/repository/files/${access_file_name}/raw?ref=${branch_name}&private_token=${token}"
 	echo
-	echo -e "${green}链接:${link}${nc}"
+	green "链接: ${link}"
 	echo
 	#生成二维码,纠错级别为H
 	qrencode -t ANSIUTF8 -l H "${link}"
 	echo
-	read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+	read -r -p "$(blue "按回车键返回主菜单...")"
 }
 #5.安装fail2ban
 install_fail2ban() {
@@ -304,7 +318,7 @@ install_fail2ban() {
 	if [ -f /etc/fail2ban/jail.local ]; then
 		sudo rm /etc/fail2ban/jail.local
 	fi
-	read -r -p "$(echo -e "${green}"请输入SSH端口号:"${nc}")" port
+	read -r -p "$(green "请输入 SSH 端口号:")" port
 	echo
 	# 更新包列表并安装Fail2ban
 	sudo apt update
@@ -348,23 +362,23 @@ EOL"
 	# 启动并启用Fail2ban服务
 	sudo systemctl start fail2ban
 	sudo systemctl enable fail2ban
-	echo -e "${yellow}Fail2ban安装和配置完成。${nc}"
+	yellow "Fail2ban 安装和配置完成"
 	echo
-	read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+	read -r -p "$(blue "按回车键返回主菜单...")"
 }
 #6.查看fail2ban状态
 check_fail2ban_status() {
 	clear
 	# 检查命令是否存在
 	if ! command -v fail2ban-client >/dev/null 2>&1; then
-		echo -e "${yellow}Fail2ban未安装。${nc}"
+		yellow "Fail2ban 未安装"
 		echo
-		read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+		read -r -p "$(blue "按回车键返回主菜单...")"
 	else
 		sudo fail2ban-client status
 		sudo fail2ban-client status sshd
 		echo
-		read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+		read -r -p "$(blue "按回车键返回主菜单...")"
 	fi
 }
 #7.卸载fail2ban
@@ -373,23 +387,23 @@ uninstall_fail2ban() {
 	sudo systemctl stop fail2ban
 	sudo rm -rf /etc/fail2ban/jail.local
 	sudo apt remove --purge fail2ban -y
-	echo -e "${yellow}Fail2ban已卸载。${nc}"
+	yellow "Fail2ban 已卸载"
 	echo
-	read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+	read -r -p "$(blue "按回车键返回主菜单...")"
 }
 #8.修改SSH端口
 update_ssh_port() {
 	clear
-	read -r -p "$(echo -e "${green}"输入新的SSH登录的端口号："${nc}") " port
+	read -r -p "$(green "输入新的 SSH 登录的端口号：") " port
 	# 定义新的SSH端口号
 	NEW_PORT=$port
 	# 修改SSH配置文件
 	sudo sed -i "s/^Port .*/Port $NEW_PORT/" /etc/ssh/sshd_config
 	# 重启SSH服务使更改生效
 	sudo systemctl restart sshd
-	echo -e "${yellow}$SSH端口已修改为$NEW_PORT!!!${nc}"
+	yellow "$SSH 端口已修改为 $NEW_PORT "
 	echo
-	read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+	read -r -p "$(blue "按回车键返回主菜单...")"
 }
 #9.拉取GitLab私有仓库指定文件
 pull_the_specified_file() {
@@ -420,18 +434,18 @@ pull_the_specified_file() {
 	git pull origin "$branch_name"
 	# 检查拉取是否成功
 	if [ $? -eq 0 ]; then
-		echo -e "${yellow}文件已成功拉取到/$LOCAL_DIR/$repo_name/$file_path${nc}"
+		yellow "文件已成功拉取到 /$LOCAL_DIR/$repo_name/$file_path"
 	else
-		echo -e "${yellow}文件拉取失败${nc}"
+		yellow "文件拉取失败"
 	fi
 	echo
-	read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+	read -r -p "$(blue "按回车键返回主菜单...")"
 }
 
 # 检查 Nginx 是否已安装
 check_nginx_installed() {
 	if dpkg -l | grep -q '^ii  nginx '; then
-		read -r -p "$(echo -e "${blue}"Nginx已存在，按回车键返回主菜单..."${nc}")"
+		read -r -p "$(blue "Nginx 已存在，按回车键返回主菜单...")"
 	fi
 }
 # 10.安装Nginx
@@ -453,45 +467,36 @@ install_nginx() {
 	sudo systemctl enable nginx
 
 	echo
-	read -r -p "$(echo -e "${blue}"Nginx安装并启动成功，按回车键返回主菜单..."${nc}")"
+	read -r -p "$(blue "Nginx 安装并启动成功，按回车键返回主菜单...")"
 }
 # 11.卸载Nginx
 uninstall_nginx() {
 	clear
 	# 检查 Nginx 是否已安装
 	if dpkg -l | grep -q '^ii  nginx'; then
-		echo -e "${GREEN}Nginx 已安装，正在卸载...${NC}"
-
-		# 停止 Nginx 服务
-		echo "停止 Nginx 服务..."
+		green "Nginx 已安装，正在卸载..."
+		green "停止 Nginx 服务..."
 		systemctl stop nginx
-
-		# 卸载 Nginx 软件包
-		echo "卸载 Nginx 软件包..."
+		green "卸载 Nginx 软件包..."
 		apt remove --purge -y nginx nginx-common nginx-core
-
-		# 删除不再需要的依赖包
-		echo "删除不再需要的依赖包..."
+		green "删除不再需要的依赖包..."
 		apt autoremove -y
-
 		# 删除配置文件和日志
-		echo "删除配置文件和日志文件..."
+		green "删除配置文件和日志文件..."
 		rm -rf /etc/nginx
 		rm -rf /var/log/nginx
 		rm -rf /var/www/html
-
 		# 删除 Nginx 相关的用户和组（如果存在）
 		if id -u www-data >/dev/null 2>&1; then
-			echo "删除 Nginx 用户和组..."
+			green "删除Nginx用户和组..."
 			deluser www-data
 			delgroup www-data
 		fi
-		# 删除所有残留的 Nginx 文件
-		echo "删除所有残留的 Nginx 文件..."
+		green "删除所有残留的 Nginx 文件..."
 		find / -name '*nginx*' -exec rm -rf {} + 2>/dev/null
-		read -r -p "$(echo -e "${blue}"Nginx已成功卸载并删除所有相关文件，按回车键返回主菜单..."${nc}")"
+		read -r -p "$(blue "Nginx 已成功卸载并删除所有相关文件，按回车键返回主菜单...")"
 	else
-		read -r -p "$(echo -e "${blue}"Nginx未安装，按回车键返回主菜单..."${nc}")"
+		read -r -p "$(blue "Nginx 未安装，按回车键返回主菜单...")"
 	fi
 }
 
@@ -506,7 +511,7 @@ update() {
 	sudo apt full-upgrade -y
 	# 自动清理不再需要的包
 	sudo apt autoremove -y
-	read -r -p "$(echo -e "${blue}"已完成更新，按回车键返回主菜单..."${nc}")"
+	read -r -p "$(blue "Nginx 安装并启动成功，按回车键返回主菜单...")"
 }
 
 # 13.使用UFW开放指定端口
@@ -517,26 +522,26 @@ open_port() {
 
 	# 检查 UFW 是否已安装
 	if ! command -v ufw &>/dev/null; then
-		echo "UFW 未安装，正在安装..."
+		green "UFW未安装，正在安装..."
 		sudo apt install -y ufw
 	fi
 
 	# 检查 UFW 是否已启用
 	if [[ $(sudo ufw status | grep -c "active") -eq 1 ]]; then
-		echo "UFW 已安装并启用，当前已开放的端口："
+		green "UFW已安装并启用，当前已开放的端口："
 		sudo ufw status
-		echo "你可以直接添加新的端口。"
+		green "你可以直接添加新的端口"
 	else
-		echo "UFW 已安装但未启用。"
+		green "UFW已安装但未启用"
 	fi
 
 	# 读取用户输入的端口，并检查格式
 	while true; do
-		read -p "请输入需要开放的端口（用英文逗号分隔，例如 22,80,443）： " ports
+		read -p "$(green "请输入需要开放的端口（用英文逗号分隔，例如 22,80,443）： ")" ports
 		if [[ $ports =~ ^[0-9]+(,[0-9]+)*$ ]]; then
 			break
 		else
-			echo "输入格式错误，请使用英文逗号分隔端口。"
+			red "输入格式错误，请使用英文逗号分隔端口。"
 		fi
 	done
 
@@ -552,7 +557,7 @@ open_port() {
 
 	# 查看UFW状态
 	sudo ufw status
-	read -r -p "$(echo -e "${blue}"按回车键返回主菜单..."${nc}")"
+	read -r -p "$(blue "按回车键返回主菜单...")"
 }
 
 main() {
@@ -578,10 +583,10 @@ main() {
 		12) update ;;
 		13) open_port ;;
 		0)
-			echo -e "${blue}程序已退出...${nc}"
+			green "程序已退出..."
 			exit
 			;;
-		*) echo -e "${red}输入有误，请重试...${nc}" ;;
+		*) red "输入有误，请重试..." ;;
 		esac
 	done
 }
