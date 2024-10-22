@@ -89,7 +89,6 @@ check_qrencode_installation() {
 gitlab_repo_info() {
 	check_git_installation
 	while true; do
-		#请输入用户名称
 		read -r -p "$(yellow 请输入GitLab用户名称:)" user_name
 		# 检查字符串是否为空或者不包含空格
 		if [ -z "$user_name" ] || [[ "$user_name" =~ [[:space:]] ]]; then
@@ -97,11 +96,9 @@ gitlab_repo_info() {
 			echo
 			continue
 		fi
-		#输入合法，则跳出循环
 		break
 	done
 	while true; do
-		#请输入仓库名称
 		read -r -p "$(yellow 请输入仓库名称:)" repo_name
 		# 检查字符串是否为空或者不包含空格
 		if [ -z "$repo_name" ] || [[ "$repo_name" =~ [[:space:]] ]]; then
@@ -109,11 +106,9 @@ gitlab_repo_info() {
 			echo
 			continue
 		fi
-		#输入合法，则跳出循环
 		break
 	done
 	while true; do
-		#请输入令牌
 		read -r -p "$(yellow 请输入令牌:)" token
 		#操作符获取字符串长度
 		length=${#token}
@@ -136,11 +131,9 @@ gitlab_repo_info() {
 				;;
 			esac
 		fi
-		#输入合法，则跳出循环
 		break
 	done
 	while true; do
-		#请输入分支名称
 		read -r -p "$(yellow 请输入分支名称:)" branch_name
 		# 检查字符串是否为空或者不包含空格
 		if [ -z "$branch_name" ] || [[ "$branch_name" =~ [[:space:]] ]]; then
@@ -148,7 +141,6 @@ gitlab_repo_info() {
 			echo
 			continue
 		fi
-		#输入合法，则跳出循环
 		break
 	done
 }
@@ -193,8 +185,6 @@ generate_gitlab_access_link() {
 	check_qrencode_installation
 	gitlab_repo_info
 	while true; do
-		#请输入文件名称
-		# shellcheck disable=SC2162
 		read -p "$(yellow "请输入包含路径的文件名称, 当前路径: / :") " file_name
 		# 检查字符串是否为空或者不包含空格
 		if [ -z "$file_name" ] || [[ "$file_name" =~ [[:space:]] ]]; then
@@ -202,7 +192,6 @@ generate_gitlab_access_link() {
 			echo
 			continue
 		fi
-		#输入合法，则跳出循环
 		break
 	done
 	# 替换 '/' 为 '%2F'
@@ -232,11 +221,8 @@ generate_gitlab_access_link() {
 push_file_to_gitlab() {
 	check_git_installation
 	check_qrencode_installation
-	# 清屏
 	clear
-	# 调用
 	gitlab_repo_info
-	# 配置Git全局用户信息
 	git config --global user.name "$user_name"
 	git config --global user.email "$user_name@example.com"
 	cd /usr || exit
@@ -255,7 +241,6 @@ push_file_to_gitlab() {
 		# 上传文件的路径
 		# shellcheck disable=SC2162
 		read -p "$(green "请输入需要推送的包含路径的文件名称:") " file_path
-		# 当文件不存在
 		if [ ! -f "$file_path" ]; then
 		red "文件不存在，请重新输入"
 			continue
@@ -297,7 +282,6 @@ push_file_to_gitlab() {
 	else
 		green "推送失败"
 	fi
-	# 删除本地仓库
 	cd ..
 	rm -r "$repo_name"
 	link="https://gitlab.com/api/v4/projects/${user_name}%2F${repo_name}/repository/files/${access_file_name}/raw?ref=${branch_name}&private_token=${token}"
@@ -312,16 +296,13 @@ push_file_to_gitlab() {
 #5.安装fail2ban
 install_fail2ban() {
 	clear
-	#停止fail2ban服务
 	sudo systemctl stop fail2ban
 	sudo apt remove --purge fail2ban -y
-	#如果存在，删除本地配置文件
 	if [ -f /etc/fail2ban/jail.local ]; then
 		sudo rm /etc/fail2ban/jail.local
 	fi
 	read -r -p "$(green "请输入 SSH 端口号:")" port
 	echo
-	# 更新包列表并安装Fail2ban
 	sudo apt update
 	sudo apt install -y fail2ban
 	# 创建本地配置文件
@@ -410,11 +391,8 @@ update_ssh_port() {
 pull_the_specified_file() {
 	LOCAL_DIR="root" # 本目录名称
 	check_git_installation
-	# 清屏
 	clear
-	# 调用
 	gitlab_repo_info
-	# 配置Git全局用户信息
 	git config --global user.name "$user_name"
 	git config --global user.email "$user_name@example.com"
 	cd /
@@ -454,19 +432,10 @@ install_nginx() {
 	clear
 	check_nginx_installed
 	echo "正在安装 Nginx..."
-
-	# 更新包列表
 	sudo apt update
-
-	# 安装 Nginx
 	sudo apt install -y nginx
-
-	# 启动 Nginx 服务
 	sudo systemctl start nginx
-
-	# 设置 Nginx 开机自启动
 	sudo systemctl enable nginx
-
 	echo
 	read -r -p "$(blue "Nginx 安装并启动成功，按回车键返回主菜单...")"
 }
@@ -482,12 +451,11 @@ uninstall_nginx() {
 		apt remove --purge -y nginx nginx-common nginx-core
 		green "删除不再需要的依赖包..."
 		apt autoremove -y
-		# 删除配置文件和日志
 		green "删除配置文件和日志文件..."
 		rm -rf /etc/nginx
 		rm -rf /var/log/nginx
 		rm -rf /var/www/html
-		# 删除 Nginx 相关的用户和组（如果存在）
+		# 删除 Nginx 相关的用户和组
 		if id -u www-data >/dev/null 2>&1; then
 			green "删除Nginx用户和组..."
 			deluser www-data
@@ -504,13 +472,9 @@ uninstall_nginx() {
 # 12.软件更新
 update() {
 	clear
-	# 更新软件包列表
 	sudo apt update -y
-	# 升级所有已安装的软件包
 	sudo apt upgrade -y
-	# 全系统升级
 	sudo apt full-upgrade -y
-	# 自动清理不再需要的包
 	sudo apt autoremove -y
 	read -r -p "$(blue "Nginx 安装并启动成功，按回车键返回主菜单...")"
 }
@@ -518,16 +482,11 @@ update() {
 # 13.使用UFW开放指定端口
 open_port() {
 	clear
-	# 更新软件包列表
-	sudo apt update
-
-	# 检查 UFW 是否已安装
+	sudo apt update -y
 	if ! command -v ufw &>/dev/null; then
 		green "UFW未安装，正在安装..."
 		sudo apt install -y ufw
 	fi
-
-	# 检查 UFW 是否已启用
 	if [[ $(sudo ufw status | grep -c "active") -eq 1 ]]; then
 		green "UFW已安装并启用，当前已开放的端口："
 		sudo ufw status
@@ -535,8 +494,6 @@ open_port() {
 	else
 		green "UFW已安装但未启用"
 	fi
-
-	# 读取用户输入的端口，并检查格式
 	while true; do
 		read -p "$(green "请输入需要开放的端口（用英文逗号分隔，例如 22,80,443）： ")" ports
 		if [[ $ports =~ ^[0-9]+(,[0-9]+)*$ ]]; then
@@ -545,29 +502,20 @@ open_port() {
 			red "输入格式错误，请使用英文逗号分隔端口。"
 		fi
 	done
-
-	# 开放输入的端口
 	for port in $(echo $ports | tr ',' ' '); do
 		sudo ufw allow $port
 	done
-
-	# 启用UFW（如果未启用）
 	if [[ $(sudo ufw status | grep -c "inactive") -eq 1 ]]; then
 		sudo ufw enable
 	fi
-
-	# 查看UFW状态
 	sudo ufw status
 	read -r -p "$(blue "按回车键返回主菜单...")"
 }
 
 main() {
-	# 清屏
 	clear
-	# 主循环
 	while true; do
 		main_menu
-		#等待用户输入数字，可编辑数字，按回车确定
 		read -r -p "" choice
 		case $choice in
 		1) display_system_info ;;
