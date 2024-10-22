@@ -24,7 +24,7 @@ blue() {
     echo -e "${blue}$1${nc}"
 }
 
-[[ $EUID -ne 0 ]] && echo -e "${red}请以root模式运行脚本${nc}" && exit
+[[ $EUID -ne 0 ]] && red "请以 root 模式运行脚本" && exit
 
 #判断操作系统
 declare -g release
