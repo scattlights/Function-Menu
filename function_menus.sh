@@ -492,11 +492,11 @@ open_port() {
 		green "UFW已安装但未启用"
 	fi
 	while true; do
-		read -p "$(green "请输入需要开放的端口，已开放的无需再次输入（用英文逗号分隔，例如 22,80,443）： ")" ports
+		read -p "$(green "请输入需要开放的端口，已开放的端口无需再次输入（用英文逗号分隔，例如 22,80,443）： ")" ports
 		if [[ $ports =~ ^[0-9]+(,[0-9]+)*$ ]]; then
 			break
 		else
-			red "输入格式错误，请使用英文逗号分隔端口。"
+			red "输入格式错误，请使用英文逗号分隔端口"
 		fi
 	done
 	for port in $(echo $ports | tr ',' ' '); do
