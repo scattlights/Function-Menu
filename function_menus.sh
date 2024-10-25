@@ -7,19 +7,19 @@ blue='\033[0;36m'
 nc='\033[0m'
 
 red() {
-    echo -e "${red}$1${nc}"
+	echo -e "${red}$1${nc}"
 }
 
 green() {
-    echo -e "${green}$1${nc}"
+	echo -e "${green}$1${nc}"
 }
 
 yellow() {
-    echo -e "${yellow}$1${nc}"
+	echo -e "${yellow}$1${nc}"
 }
 
 blue() {
-    echo -e "${blue}$1${nc}"
+	echo -e "${blue}$1${nc}"
 }
 
 [[ $EUID -ne 0 ]] && red "请以root模式运行脚本" && exit
@@ -90,7 +90,7 @@ gitlab_repo_info() {
 		read -r -p "$(yellow 请输入GitLab用户名称:)" user_name
 		# 检查字符串是否为空或者不包含空格
 		if [ -z "$user_name" ] || [[ "$user_name" =~ [[:space:]] ]]; then
-			red "输入不能为空或者不能包含空格，请重新输入" 
+			red "输入不能为空或者不能包含空格，请重新输入"
 			echo
 			continue
 		fi
@@ -100,7 +100,7 @@ gitlab_repo_info() {
 		read -r -p "$(yellow 请输入仓库名称:)" repo_name
 		# 检查字符串是否为空或者不包含空格
 		if [ -z "$repo_name" ] || [[ "$repo_name" =~ [[:space:]] ]]; then
-			red "输入不能为空或者不能包含空格，请重新输入" 
+			red "输入不能为空或者不能包含空格，请重新输入"
 			echo
 			continue
 		fi
@@ -135,7 +135,7 @@ gitlab_repo_info() {
 		read -r -p "$(yellow 请输入分支名称:)" branch_name
 		# 检查字符串是否为空或者不包含空格
 		if [ -z "$branch_name" ] || [[ "$branch_name" =~ [[:space:]] ]]; then
-			red "输入不能为空或者不能包含空格，请重新输入" 
+			red "输入不能为空或者不能包含空格，请重新输入"
 			echo
 			continue
 		fi
@@ -159,6 +159,7 @@ main_menu() {
 	green "11. 卸载NGINX"
 	green "12. 软件更新"
 	green "13. 使用UFW防火墙开放指定端口"
+	green "14. 查看当前时区"
 	green "0. 退出"
 	yellow "=============================="
 }
@@ -177,7 +178,7 @@ display_disk_space() {
 	read -r -p "$(blue "按回车键返回主菜单...")"
 }
 
-#选项3：生成gitlab私有仓库访问链接
+# 选项3：生成gitlab私有仓库访问链接
 generate_gitlab_access_link() {
 	clear
 	check_qrencode_installation
@@ -209,13 +210,14 @@ generate_gitlab_access_link() {
 		read -r -p "$(blue "按回车键返回主菜单...")"
 	else
 		echo
-		green "输入信息有误，链接无法访问，状态码为: "; red "${response_code}"
+		green "输入信息有误，链接无法访问，状态码为: "
+		red "${response_code}"
 		echo
 		read -r -p "$(blue "按回车键返回主菜单...")"
 	fi
 }
 
-#选项4：推送单个文件到gitlab私有仓库，并生成访问链接
+# 选项4：推送单个文件到gitlab私有仓库，并生成访问链接
 push_file_to_gitlab() {
 	check_git_installation
 	check_qrencode_installation
@@ -234,13 +236,13 @@ push_file_to_gitlab() {
 	# 设置远程仓库
 	git remote add origin https://"$user_name":"$token"@gitlab.com/"$user_name"/"$repo_name".git
 	# 拉取最新
- 	git pull origin "$BRANCH_NAME" --no-rebase
+	git pull origin "$BRANCH_NAME" --no-rebase
 	while true; do
 		# 上传文件的路径
 		# shellcheck disable=SC2162
 		read -p "$(green "请输入需要推送的包含路径的文件名称:") " file_path
 		if [ ! -f "$file_path" ]; then
-		red "文件不存在，请重新输入"
+			red "文件不存在，请重新输入"
 			continue
 		else
 			break
@@ -291,7 +293,7 @@ push_file_to_gitlab() {
 	echo
 	read -r -p "$(blue "按回车键返回主菜单...")"
 }
-#5.安装fail2ban
+# 5.安装fail2ban
 install_fail2ban() {
 	clear
 	sudo systemctl stop fail2ban
@@ -361,7 +363,7 @@ check_fail2ban_status() {
 		read -r -p "$(blue "按回车键返回主菜单...")"
 	fi
 }
-#7.卸载fail2ban
+# 7.卸载fail2ban
 uninstall_fail2ban() {
 	clear
 	sudo systemctl stop fail2ban
@@ -371,22 +373,22 @@ uninstall_fail2ban() {
 	echo
 	read -r -p "$(blue "按回车键返回主菜单...")"
 }
-#8.修改SSH端口
+# 8.修改SSH端口
 update_ssh_port() {
 	clear
 	read -r -p "$(green "输入新的 SSH 登录的端口号：") " port
- 	echo
+	echo
 	# 定义新的SSH端口号
 	NEW_PORT=$port
 	# 修改SSH配置文件
-        sudo sed -i "s/^#\?Port .*/Port $NEW_PORT/" /etc/ssh/sshd_config && yellow "修改成功！！！"
+	sudo sed -i "s/^#\?Port .*/Port $NEW_PORT/" /etc/ssh/sshd_config && yellow "修改成功！！！"
 	# 重启SSH服务使更改生效
 	sudo systemctl restart sshd
 	yellow "新端口为 $NEW_PORT "
 	echo
 	read -r -p "$(blue "按回车键返回主菜单...")"
 }
-#9.拉取GitLab私有仓库指定文件
+# 9.拉取GitLab私有仓库指定文件
 pull_the_specified_file() {
 	LOCAL_DIR="root" # 本目录名称
 	check_git_installation
@@ -507,6 +509,72 @@ open_port() {
 		sudo ufw enable
 	fi
 	sudo ufw status
+	read -r -p "$(blue "按回车键返回主菜单...")"
+}
+
+# 14.查看当前时区
+view_the_current_timezone() {
+	timezone_info=$(timedatectl | grep "Time zone")
+	yellow "$timezone_info"
+	echo
+	while true; do
+		green "请选择一个选项："
+		echo "1) 修改时区"
+		echo "2) 退出"
+
+		read -p "输入选项: " option
+
+		case $option in
+		1)
+			while true; do
+				read -p "请输入新的时区（例如：Asia/Shanghai）： " timezone_option
+				green "1) 亚洲/上海"
+				green "2) 美国/纽约"
+				green "3) 欧洲/伦敦"
+				green "4) 澳大利亚/悉尼"
+				green "5) 亚洲/东京"
+				case $timezone_option in
+				1)
+					sudo timedatectl set-timezone Asia/Shanghai
+					yellow "$timezone_info"
+					break
+					;;
+				2)
+					sudo timedatectl set-timezone America/New_York
+					yellow "$timezone_info"
+					break
+					;;
+				3)
+					sudo timedatectl set-timezone Europe/London
+					yellow "$timezone_info"
+					break
+					;;
+				4)
+					sudo timedatectl set-timezone Australia/Sydney
+					yellow "$timezone_info"
+					break
+					;;
+				5)
+					sudo timedatectl set-timezone Asia/Tokyo
+					yellow "$timezone_info"
+					break
+					;;
+				*)
+					red "无效的选择"
+					;;
+				esac
+			done
+			break
+			;;
+		2)
+			echo "退出程序"
+			break
+			;;
+		*)
+			echo "无效的选项"
+			;;
+		esac
+	done
 	read -r -p "$(blue "按回车键返回主菜单...")"
 }
 
