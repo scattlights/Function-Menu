@@ -159,7 +159,7 @@ main_menu() {
 	green "11. 卸载NGINX"
 	green "12. 软件更新"
 	green "13. 使用UFW防火墙开放指定端口"
-	green "14. 查看当前时区"
+	green "14. 查看或修改当前时区"
 	green "0. 退出"
 	yellow "=============================="
 }
@@ -513,7 +513,8 @@ open_port() {
 }
 
 # 14.查看当前时区
-view_the_current_timezone() {
+view_or_modify_the_current_timezone() {
+	echo
 	timezone_info=$(timedatectl | grep "Time zone")
 	yellow "当前时区：$timezone_info"
 	echo
@@ -527,6 +528,7 @@ view_the_current_timezone() {
 		case $option in
 		1)
 			while true; do
+   				echo
    				green "1) 亚洲/上海"
 				green "2) 美国/纽约"
 				green "3) 欧洲/伦敦"
@@ -535,38 +537,43 @@ view_the_current_timezone() {
 				read -p "$(green "输入选项：")" timezone_option
 				case $timezone_option in
 				1)
+    					echo
 					sudo timedatectl set-timezone Asia/Shanghai
      					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
 					break
 					;;
-				2)
+				2)	
+    					echo
 					sudo timedatectl set-timezone America/New_York
      					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"		
 					break
 					;;
-				3)
+				3)	
+    					echo
 					sudo timedatectl set-timezone Europe/London
      					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
 					break
 					;;
 				4)
+    					echo
 					sudo timedatectl set-timezone Australia/Sydney
      					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
 					break
 					;;
-				5)
+				5)	
+    					echo
 					sudo timedatectl set-timezone Asia/Tokyo
      					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
 					break
 					;;
 				*)
+    					echo
 					red "无效的选择"
-     					echo
 					;;
 				esac
 			done
@@ -575,7 +582,8 @@ view_the_current_timezone() {
 		2)
 			break
 			;;
-		*)
+		*)	
+  			echo
 			red "无效的选项"
    			echo
 			;;
@@ -602,7 +610,7 @@ main() {
 		11) uninstall_nginx ;;
 		12) update ;;
 		13) open_port ;;
-  		14) view_the_current_timezone ;;
+  		14) view_or_modify_the_current_timezone ;;
 		0)
 			green "程序已退出..."
 			exit
