@@ -527,12 +527,12 @@ view_the_current_timezone() {
 		case $option in
 		1)
 			while true; do
-				read -p "请输入新的时区（例如：Asia/Shanghai）： " timezone_option
-				green "1) 亚洲/上海"
+   				green "1) 亚洲/上海"
 				green "2) 美国/纽约"
 				green "3) 欧洲/伦敦"
 				green "4) 澳大利亚/悉尼"
 				green "5) 亚洲/东京"
+				read -p "请输入新的时区（例如：Asia/Shanghai）： " timezone_option
 				case $timezone_option in
 				1)
 					sudo timedatectl set-timezone Asia/Shanghai
