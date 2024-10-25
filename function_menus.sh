@@ -144,7 +144,7 @@ gitlab_repo_info() {
 }
 
 main_menu() {
-	echo
+ 	clear
 	yellow "=============================="
 	green "1. 显示系统信息"
 	green "2. 显示磁盘空间"
@@ -537,47 +537,46 @@ view_or_modify_the_current_timezone() {
 				read -p "$(green "输入选项：")" timezone_option
 				case $timezone_option in
 				1)
-    					echo
 	 				clear
 					sudo timedatectl set-timezone Asia/Shanghai
      					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
+     					read -r -p "$(blue "按回车键返回主菜单...")"
 					break
 					;;
 				2)	
-    					echo
 	 				clear
 					sudo timedatectl set-timezone America/New_York
      					timezone_info=$(timedatectl | grep "Time zone")
-					yellow "当前时区：$timezone_info"		
+					yellow "当前时区：$timezone_info"	
+     					read -r -p "$(blue "按回车键返回主菜单...")"
 					break
 					;;
 				3)	
-    					echo
 	 				clear
 					sudo timedatectl set-timezone Europe/London
      					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
+     	  				read -r -p "$(blue "按回车键返回主菜单...")"
 					break
 					;;
 				4)
-    					echo
 	 				clear
 					sudo timedatectl set-timezone Australia/Sydney
      					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
+     					read -r -p "$(blue "按回车键返回主菜单...")"
 					break
 					;;
 				5)	
-    					echo
 	 				clear
 					sudo timedatectl set-timezone Asia/Tokyo
      					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
+     					read -r -p "$(blue "按回车键返回主菜单...")"
 					break
 					;;
 				*)
-    					echo
 	 				clear
 					red "无效的选择"
 					;;
