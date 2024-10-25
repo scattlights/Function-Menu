@@ -19,6 +19,7 @@
 * Uninstall Nginx
 * Update
 * Open specific ports using the UFW firewall
+* View or modify the current timezone
   
 ```shell
 bash <(curl -Ls https://raw.githubusercontent.com/scattlights/Function-Menu/main/function_menus.sh)
