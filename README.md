@@ -21,7 +21,7 @@
 * Open specific ports using the UFW firewall
   
 ```shell
-bash <(curl -Ls https://raw.githubusercontent.com/scattlights/MShell/main/function_menus.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/scattlights/Function-Menu/main/function_menus.sh)
 ```
 
 
