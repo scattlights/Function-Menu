@@ -378,10 +378,10 @@ update_ssh_port() {
 	# 定义新的SSH端口号
 	NEW_PORT=$port
 	# 修改SSH配置文件
-	sudo sed -i "s/^Port .*/Port $NEW_PORT/" /etc/ssh/sshd_config
+        sudo sed -i "s/^#\?Port .*/Port $NEW_PORT/" /etc/ssh/sshd_config && echo "修改成功！！！"
 	# 重启SSH服务使更改生效
 	sudo systemctl restart sshd
-	yellow "$SSH 端口已修改为 $NEW_PORT "
+	yellow "$SSH 新端口为 $NEW_PORT "
 	echo
 	read -r -p "$(blue "按回车键返回主菜单...")"
 }
