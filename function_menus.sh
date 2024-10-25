@@ -520,7 +520,7 @@ view_the_current_timezone() {
 	while true; do
 		green "请选择一个选项："
 		green "1) 修改时区"
-		green "2) 退出"
+		green "2) 返回主菜单"
 
 		read -p "$(green "输入选项：")" option
 
@@ -566,21 +566,21 @@ view_the_current_timezone() {
 					;;
 				*)
 					red "无效的选择"
+     					echo
 					;;
 				esac
 			done
 			break
 			;;
 		2)
-			green "退出程序"
 			break
 			;;
 		*)
 			red "无效的选项"
+   			echo
 			;;
 		esac
 	done
-	read -r -p "$(blue "按回车键返回主菜单...")"
 }
 
 main() {
