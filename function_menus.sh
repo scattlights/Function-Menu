@@ -514,8 +514,8 @@ open_port() {
 
 # 14.查看当前时区
 view_or_modify_the_current_timezone() {
-	clear
 	timezone_info=$(timedatectl | grep "Time zone")
+ 	clear
 	yellow "当前时区：$timezone_info"
 	echo
 	while true; do
