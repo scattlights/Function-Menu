@@ -619,7 +619,8 @@ main() {
 		13) open_port ;;
   		14) view_or_modify_the_current_timezone ;;
 		0)
-			green "程序已退出..."
+  			clear
+			green "脚本已退出..."
 			exit
 			;;
 		*) red "输入有误，请重试..." ;;
