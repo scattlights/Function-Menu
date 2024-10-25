@@ -515,14 +515,14 @@ open_port() {
 # 14.查看当前时区
 view_the_current_timezone() {
 	timezone_info=$(timedatectl | grep "Time zone")
-	yellow "$timezone_info"
+	yellow "当前时区：$timezone_info"
 	echo
 	while true; do
 		green "请选择一个选项："
-		echo "1) 修改时区"
-		echo "2) 退出"
+		green "1) 修改时区"
+		green "2) 退出"
 
-		read -p "输入选项: " option
+		read -p "$(green "输入选项：")" option
 
 		case $option in
 		1)
@@ -532,31 +532,31 @@ view_the_current_timezone() {
 				green "3) 欧洲/伦敦"
 				green "4) 澳大利亚/悉尼"
 				green "5) 亚洲/东京"
-				read -p "请输入新的时区（例如：Asia/Shanghai）： " timezone_option
+				read -p "$(green "输入选项：")" timezone_option
 				case $timezone_option in
 				1)
 					sudo timedatectl set-timezone Asia/Shanghai
-					yellow "$timezone_info"
+					yellow "当前时区：$timezone_info"
 					break
 					;;
 				2)
 					sudo timedatectl set-timezone America/New_York
-					yellow "$timezone_info"
+					yellow "当前时区：$timezone_info"		
 					break
 					;;
 				3)
 					sudo timedatectl set-timezone Europe/London
-					yellow "$timezone_info"
+					yellow "当前时区：$timezone_info"
 					break
 					;;
 				4)
 					sudo timedatectl set-timezone Australia/Sydney
-					yellow "$timezone_info"
+					yellow "当前时区：$timezone_info"
 					break
 					;;
 				5)
 					sudo timedatectl set-timezone Asia/Tokyo
-					yellow "$timezone_info"
+					yellow "当前时区：$timezone_info"
 					break
 					;;
 				*)
@@ -567,11 +567,11 @@ view_the_current_timezone() {
 			break
 			;;
 		2)
-			echo "退出程序"
+			green "退出程序"
 			break
 			;;
 		*)
-			echo "无效的选项"
+			red "无效的选项"
 			;;
 		esac
 	done
