@@ -19,6 +19,7 @@
 * 卸载NGINX
 * 更新
 * 使用UFW防火墙开放特定端口
+* 查看或修改当前时区
 ```shell
 bash <(curl -Ls https://raw.githubusercontent.com/scattlights/Function-Menu/main/function_menus.sh)
 ```
