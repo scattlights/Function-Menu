@@ -20,7 +20,7 @@
 * 更新
 * 使用UFW防火墙开放特定端口
 ```shell
-bash <(curl -Ls https://raw.githubusercontent.com/just2so/MShell/main/function_menus.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/scattlights/Function-Menu/main/function_menus.sh)
 ```
 
 
