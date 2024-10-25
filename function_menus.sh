@@ -538,6 +538,7 @@ view_or_modify_the_current_timezone() {
 				case $timezone_option in
 				1)
     					echo
+	 				clear
 					sudo timedatectl set-timezone Asia/Shanghai
      					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
@@ -545,6 +546,7 @@ view_or_modify_the_current_timezone() {
 					;;
 				2)	
     					echo
+	 				clear
 					sudo timedatectl set-timezone America/New_York
      					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"		
@@ -552,6 +554,7 @@ view_or_modify_the_current_timezone() {
 					;;
 				3)	
     					echo
+	 				clear
 					sudo timedatectl set-timezone Europe/London
      					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
@@ -559,6 +562,7 @@ view_or_modify_the_current_timezone() {
 					;;
 				4)
     					echo
+	 				clear
 					sudo timedatectl set-timezone Australia/Sydney
      					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
@@ -566,6 +570,7 @@ view_or_modify_the_current_timezone() {
 					;;
 				5)	
     					echo
+	 				clear
 					sudo timedatectl set-timezone Asia/Tokyo
      					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
@@ -573,13 +578,15 @@ view_or_modify_the_current_timezone() {
 					;;
 				*)
     					echo
+	 				clear
 					red "无效的选择"
 					;;
 				esac
 			done
 			break
 			;;
-		2)
+		2)	
+  			clear
 			break
 			;;
 		*)	
