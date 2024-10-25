@@ -597,6 +597,7 @@ main() {
 		11) uninstall_nginx ;;
 		12) update ;;
 		13) open_port ;;
+  		14) view_the_current_timezone ;;
 		0)
 			green "程序已退出..."
 			exit
