@@ -528,7 +528,7 @@ view_or_modify_the_current_timezone() {
 		case $option in
 		1)
 			while true; do
-   				echo
+   				clear
    				green "1) 亚洲/上海"
 				green "2) 美国/纽约"
 				green "3) 欧洲/伦敦"
