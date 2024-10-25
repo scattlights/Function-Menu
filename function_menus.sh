@@ -474,7 +474,7 @@ update() {
 	sudo apt upgrade -y
 	sudo apt full-upgrade -y
 	sudo apt autoremove -y
-	read -r -p "$(blue "Nginx 安装并启动成功，按回车键返回主菜单...")"
+	read -r -p "$(blue "更新成功，按回车键返回主菜单...")"
 }
 
 # 13.使用UFW开放指定端口
