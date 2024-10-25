@@ -375,13 +375,14 @@ uninstall_fail2ban() {
 update_ssh_port() {
 	clear
 	read -r -p "$(green "输入新的 SSH 登录的端口号：") " port
+ 	echo
 	# 定义新的SSH端口号
 	NEW_PORT=$port
 	# 修改SSH配置文件
-        sudo sed -i "s/^#\?Port .*/Port $NEW_PORT/" /etc/ssh/sshd_config && echo "修改成功！！！"
+        sudo sed -i "s/^#\?Port .*/Port $NEW_PORT/" /etc/ssh/sshd_config && yellow "修改成功！！！"
 	# 重启SSH服务使更改生效
 	sudo systemctl restart sshd
-	yellow "$SSH 新端口为 $NEW_PORT "
+	yellow "新端口为 $NEW_PORT "
 	echo
 	read -r -p "$(blue "按回车键返回主菜单...")"
 }
