@@ -536,26 +536,31 @@ view_the_current_timezone() {
 				case $timezone_option in
 				1)
 					sudo timedatectl set-timezone Asia/Shanghai
+     					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
 					break
 					;;
 				2)
 					sudo timedatectl set-timezone America/New_York
+     					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"		
 					break
 					;;
 				3)
 					sudo timedatectl set-timezone Europe/London
+     					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
 					break
 					;;
 				4)
 					sudo timedatectl set-timezone Australia/Sydney
+     					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
 					break
 					;;
 				5)
 					sudo timedatectl set-timezone Asia/Tokyo
+     					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
 					break
 					;;
