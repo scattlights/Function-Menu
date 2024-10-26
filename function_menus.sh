@@ -748,8 +748,7 @@ view_or_edit_cron_jobs() {
 		2) modify_task ;;
 		3) delete_task ;;
 		4)
-			echo "退出程序."
-			exit 0
+			echo "返回主菜单"
 			;;
 		*)
 			echo "无效的选项，请重新输入"
