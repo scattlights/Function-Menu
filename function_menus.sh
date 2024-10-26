@@ -144,7 +144,7 @@ gitlab_repo_info() {
 }
 
 main_menu() {
- 	clear
+	clear
 	yellow "=============================="
 	green "1. 显示系统信息"
 	green "2. 显示磁盘空间"
@@ -160,6 +160,7 @@ main_menu() {
 	green "12. 软件更新"
 	green "13. 使用UFW防火墙开放指定端口"
 	green "14. 查看或修改当前时区"
+	green "15. 查看或编辑定时任务"
 	green "0. 退出"
 	yellow "=============================="
 }
@@ -515,7 +516,7 @@ open_port() {
 # 14.查看当前时区
 view_or_modify_the_current_timezone() {
 	timezone_info=$(timedatectl | grep "Time zone")
- 	clear
+	clear
 	yellow "当前时区：$timezone_info"
 	echo
 	while true; do
@@ -528,8 +529,8 @@ view_or_modify_the_current_timezone() {
 		case $option in
 		1)
 			while true; do
-   				clear
-   				green "1) 亚洲/上海"
+				clear
+				green "1) 亚洲/上海"
 				green "2) 美国/纽约"
 				green "3) 欧洲/伦敦"
 				green "4) 澳大利亚/悉尼"
@@ -537,61 +538,222 @@ view_or_modify_the_current_timezone() {
 				read -p "$(green "输入选项：")" timezone_option
 				case $timezone_option in
 				1)
-	 				clear
+					clear
 					sudo timedatectl set-timezone Asia/Shanghai
-     					timezone_info=$(timedatectl | grep "Time zone")
+					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
-     					read -r -p "$(blue "按回车键返回主菜单...")"
+					read -r -p "$(blue "按回车键返回主菜单...")"
 					break
 					;;
-				2)	
-	 				clear
+				2)
+					clear
 					sudo timedatectl set-timezone America/New_York
-     					timezone_info=$(timedatectl | grep "Time zone")
-					yellow "当前时区：$timezone_info"	
-     					read -r -p "$(blue "按回车键返回主菜单...")"
+					timezone_info=$(timedatectl | grep "Time zone")
+					yellow "当前时区：$timezone_info"
+					read -r -p "$(blue "按回车键返回主菜单...")"
 					break
 					;;
-				3)	
-	 				clear
+				3)
+					clear
 					sudo timedatectl set-timezone Europe/London
-     					timezone_info=$(timedatectl | grep "Time zone")
+					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
-     	  				read -r -p "$(blue "按回车键返回主菜单...")"
+					read -r -p "$(blue "按回车键返回主菜单...")"
 					break
 					;;
 				4)
-	 				clear
+					clear
 					sudo timedatectl set-timezone Australia/Sydney
-     					timezone_info=$(timedatectl | grep "Time zone")
+					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
-     					read -r -p "$(blue "按回车键返回主菜单...")"
+					read -r -p "$(blue "按回车键返回主菜单...")"
 					break
 					;;
-				5)	
-	 				clear
+				5)
+					clear
 					sudo timedatectl set-timezone Asia/Tokyo
-     					timezone_info=$(timedatectl | grep "Time zone")
+					timezone_info=$(timedatectl | grep "Time zone")
 					yellow "当前时区：$timezone_info"
-     					read -r -p "$(blue "按回车键返回主菜单...")"
+					read -r -p "$(blue "按回车键返回主菜单...")"
 					break
 					;;
 				*)
-	 				clear
+					clear
 					red "无效的选择"
 					;;
 				esac
 			done
 			break
 			;;
-		2)	
-  			clear
+		2)
+			clear
 			break
 			;;
-		*)	
-  			echo
+		*)
+			echo
 			red "无效的选项"
-   			echo
+			echo
+			;;
+		esac
+	done
+}
+
+# 15.查看或编辑定时任务
+view_or_edit_cron_jobs() {
+	# 显示当前的定时任务
+	display_tasks() {
+		echo "当前的定时任务:"
+		current_tasks=()
+		while IFS= read -r line; do
+			if [[ ! $line =~ ^# && ! -z $line ]]; then
+				current_tasks+=("$line")
+			fi
+		done < <(crontab -l)
+
+		if [ ${#current_tasks[@]} -eq 0 ]; then
+			echo "没有定时任务"
+			return
+		fi
+
+		# 为每个任务编号
+		for i in "${!current_tasks[@]}"; do
+			echo "$((i + 1)): ${current_tasks[i]}"
+		done
+	}
+
+	# 添加定时任务
+	add_task() {
+		echo
+		read -p "请输入一条要添加的定时任务: " new_task
+
+		# 创建临时文件
+		temp_file=$(mktemp)
+
+		# 将新任务添加到临时文件
+		{
+			crontab -l 2>/dev/null
+			echo "$new_task"
+		} >"$temp_file"
+
+		# 更新 crontab
+		crontab "$temp_file"
+		rm "$temp_file" # 删除临时文件
+		echo "添加成功"
+		sleep 1
+	}
+
+	# 修改定时任务
+	modify_task() {
+		while true; do
+			echo
+			display_tasks
+			read -p "请选择要修改的任务编号: " task_number
+
+			# 检查用户输入
+			if [[ $task_number -lt 1 || $task_number -gt ${#current_tasks[@]} ]]; then
+				echo "无效的任务编号，请重新输入"
+				sleep 2
+			else
+				# 获取用户选择的任务
+				selected_task="${current_tasks[$task_number - 1]}"
+				break
+			fi
+		done
+		echo
+		echo "当前选择的任务是: $selected_task"
+		echo
+		read -p "请输入新的定时任务: " new_task
+
+		# 创建临时文件
+		temp_file=$(mktemp)
+
+		# 更新定时任务
+		{
+			for task in "${current_tasks[@]}"; do
+				if [[ "$task" == "$selected_task" ]]; then
+					echo "$new_task" # 替换为新任务
+				else
+					echo "$task" # 保留其他任务
+				fi
+			done
+		} >"$temp_file"
+
+		# 更新 crontab
+		crontab "$temp_file"
+		rm "$temp_file" # 删除临时文件
+
+		echo "定时任务已更新"
+	}
+
+	# 删除定时任务
+	delete_task() {
+		while true; do
+			clear
+			display_tasks
+			read -p "请选择要删除的任务编号,用英文逗号隔开（如 1,2,3）: " task_numbers
+
+			# 将用户输入的编号转换为数组
+			IFS=',' read -r -a task_array <<<"$task_numbers"
+
+			# 检查每个编号是否有效
+			invalid=false
+			for num in "${task_array[@]}"; do
+				if [[ ! "$num" =~ ^[0-9]+$ ]] || [[ $num -lt 1 || $num -gt ${#current_tasks[@]} ]]; then
+					echo "无效的任务编号: $num，请重新输入"
+					invalid=true
+					sleep 2
+					break
+				fi
+			done
+
+			if ! $invalid; then
+				break
+			fi
+		done
+
+		# 创建临时文件
+		temp_file=$(mktemp)
+
+		# 更新定时任务
+		{
+			for i in "${!current_tasks[@]}"; do
+				if [[ ! " ${task_array[*]} " =~ " $((i + 1)) " ]]; then
+					echo "${current_tasks[i]}" # 保留未删除的任务
+				fi
+			done
+		} >"$temp_file"
+
+		# 更新 crontab
+		crontab "$temp_file"
+		rm "$temp_file" # 删除临时文件
+
+		echo "定时任务已删除"
+		sleep 2
+	}
+
+	# 主循环
+	while true; do
+		clear
+		display_tasks
+		echo
+		echo "选择操作:"
+		echo "1. 添加定时任务"
+		echo "2. 修改指定序号的定时任务"
+		echo "3. 删除指定序号的定时任务"
+		echo "4. 退出"
+		read -p "请输入选项 (1-4): " option
+
+		case $option in
+		1) add_task ;;
+		2) modify_task ;;
+		3) delete_task ;;
+		4)
+			echo "退出程序."
+			exit 0
+			;;
+		*)
+			echo "无效的选项，请重新输入"
+			sleep 1
 			;;
 		esac
 	done
@@ -616,9 +778,10 @@ main() {
 		11) uninstall_nginx ;;
 		12) update ;;
 		13) open_port ;;
-  		14) view_or_modify_the_current_timezone ;;
+		14) view_or_modify_the_current_timezone ;;
+		15) view_or_edit_cron_jobs ;;
 		0)
-  			clear
+			clear
 			green "脚本已退出..."
 			exit
 			;;
