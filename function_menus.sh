@@ -741,7 +741,7 @@ view_or_edit_cron_jobs() {
 		green "2. 修改指定序号的定时任务"
 		green "3. 删除指定序号的定时任务"
 		green "4. 返回主菜单"
-		read -p "$(green "请输入选项 (1-4)")": " option
+		read -p "$(green "请输入选项 (1-4): ")" option
 
 		case $option in
 		1) add_task ;;
