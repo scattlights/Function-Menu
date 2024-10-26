@@ -662,7 +662,7 @@ view_or_edit_cron_jobs() {
 			fi
 		done
 		echo
-		green "当前选择的任务是: $selected_task"
+		yellow "当前选择的任务是: $selected_task"
 		echo
 		read -p "$(green "请输入新的定时任务: ")" new_task
 
