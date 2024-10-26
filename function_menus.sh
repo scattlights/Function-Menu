@@ -699,7 +699,7 @@ view_or_edit_cron_jobs() {
 			invalid=false
 			for num in "${task_array[@]}"; do
 				if [[ ! "$num" =~ ^[0-9]+$ ]] || [[ $num -lt 1 || $num -gt ${#current_tasks[@]} ]]; then
-					echo "无效的任务编号: $num，请重新输入"
+					red "无效的任务编号: $num，请重新输入"
 					invalid=true
 					sleep 2
 					break
@@ -726,8 +726,8 @@ view_or_edit_cron_jobs() {
 		# 更新 crontab
 		crontab "$temp_file"
 		rm "$temp_file" # 删除临时文件
-
-		echo "定时任务已删除"
+		echo
+		green "定时任务已删除"
 		sleep 2
 	}
 
@@ -736,22 +736,21 @@ view_or_edit_cron_jobs() {
 		clear
 		display_tasks
 		echo
-		echo "选择操作:"
-		echo "1. 添加定时任务"
-		echo "2. 修改指定序号的定时任务"
-		echo "3. 删除指定序号的定时任务"
-		echo "4. 退出"
-		read -p "请输入选项 (1-4): " option
+		green "选择操作:"
+		green "1. 添加定时任务"
+		green "2. 修改指定序号的定时任务"
+		green "3. 删除指定序号的定时任务"
+		green "4. 返回主菜单"
+		read -p "$(green "请输入选项 (1-4)")": " option
 
 		case $option in
 		1) add_task ;;
 		2) modify_task ;;
 		3) delete_task ;;
 		4)
-			echo "返回主菜单"
 			;;
 		*)
-			echo "无效的选项，请重新输入"
+			red "无效的选项，请重新输入"
 			sleep 1
 			;;
 		esac
