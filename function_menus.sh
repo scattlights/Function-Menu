@@ -748,6 +748,7 @@ view_or_edit_cron_jobs() {
 		2) modify_task ;;
 		3) delete_task ;;
 		4)
+  			break
 			;;
 		*)
 			red "无效的选项，请重新输入"
