@@ -624,7 +624,7 @@ view_or_edit_cron_jobs() {
 	# 添加定时任务
 	add_task() {
 		echo
-		read -p "请输入一条要添加的定时任务: " new_task
+		read -p "$(green "请输入一条要添加的定时任务: ")" new_task
 
 		# 创建临时文件
 		temp_file=$(mktemp)
@@ -638,6 +638,7 @@ view_or_edit_cron_jobs() {
 		# 更新 crontab
 		crontab "$temp_file"
 		rm "$temp_file" # 删除临时文件
+  		echo
 		green "添加成功"
 		sleep 1
 	}
@@ -647,10 +648,11 @@ view_or_edit_cron_jobs() {
 		while true; do
 			echo
 			display_tasks
-			read -p "请选择要修改的任务编号: " task_number
+			read -p "$(green "请选择要修改的任务编号: ")" task_number
 
 			# 检查用户输入
 			if [[ $task_number -lt 1 || $task_number -gt ${#current_tasks[@]} ]]; then
+   				echo
 				red "无效的任务编号，请重新输入"
 				sleep 2
 			else
@@ -662,7 +664,7 @@ view_or_edit_cron_jobs() {
 		echo
 		green "当前选择的任务是: $selected_task"
 		echo
-		read -p "请输入新的定时任务: " new_task
+		read -p "$(green "请输入新的定时任务: ")" new_task
 
 		# 创建临时文件
 		temp_file=$(mktemp)
@@ -681,8 +683,9 @@ view_or_edit_cron_jobs() {
 		# 更新 crontab
 		crontab "$temp_file"
 		rm "$temp_file" # 删除临时文件
-
+		echo
 		green "定时任务已更新"
+  		sleep 2
 	}
 
 	# 删除定时任务
@@ -690,7 +693,7 @@ view_or_edit_cron_jobs() {
 		while true; do
 			clear
 			display_tasks
-			read -p "请选择要删除的任务编号,用英文逗号隔开（如 1,2,3）: " task_numbers
+			read -p "$(green "请选择要删除的任务编号,用英文逗号隔开（如 1,2,3）: ")" task_numbers
 
 			# 将用户输入的编号转换为数组
 			IFS=',' read -r -a task_array <<<"$task_numbers"
