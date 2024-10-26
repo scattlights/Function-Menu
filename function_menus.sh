@@ -602,7 +602,7 @@ view_or_modify_the_current_timezone() {
 view_or_edit_cron_jobs() {
 	# 显示当前的定时任务
 	display_tasks() {
-		echo "当前的定时任务:"
+		green "当前的定时任务:"
 		current_tasks=()
 		while IFS= read -r line; do
 			if [[ ! $line =~ ^# && ! -z $line ]]; then
@@ -611,13 +611,13 @@ view_or_edit_cron_jobs() {
 		done < <(crontab -l)
 
 		if [ ${#current_tasks[@]} -eq 0 ]; then
-			echo "没有定时任务"
+			green "没有定时任务"
 			return
 		fi
 
 		# 为每个任务编号
 		for i in "${!current_tasks[@]}"; do
-			echo "$((i + 1)): ${current_tasks[i]}"
+			yellow "$((i + 1)): ${current_tasks[i]}"
 		done
 	}
 
@@ -638,7 +638,7 @@ view_or_edit_cron_jobs() {
 		# 更新 crontab
 		crontab "$temp_file"
 		rm "$temp_file" # 删除临时文件
-		echo "添加成功"
+		green "添加成功"
 		sleep 1
 	}
 
@@ -651,7 +651,7 @@ view_or_edit_cron_jobs() {
 
 			# 检查用户输入
 			if [[ $task_number -lt 1 || $task_number -gt ${#current_tasks[@]} ]]; then
-				echo "无效的任务编号，请重新输入"
+				red "无效的任务编号，请重新输入"
 				sleep 2
 			else
 				# 获取用户选择的任务
@@ -660,7 +660,7 @@ view_or_edit_cron_jobs() {
 			fi
 		done
 		echo
-		echo "当前选择的任务是: $selected_task"
+		green "当前选择的任务是: $selected_task"
 		echo
 		read -p "请输入新的定时任务: " new_task
 
@@ -682,7 +682,7 @@ view_or_edit_cron_jobs() {
 		crontab "$temp_file"
 		rm "$temp_file" # 删除临时文件
 
-		echo "定时任务已更新"
+		green "定时任务已更新"
 	}
 
 	# 删除定时任务
