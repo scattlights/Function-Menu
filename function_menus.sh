@@ -54,6 +54,12 @@ else
 	fi
 fi
 
+if ! command -v curl &> /dev/null
+then
+    apt update -y
+    apt install -y curl
+fi
+
 apt-get update
 apt-get install sudo
 
