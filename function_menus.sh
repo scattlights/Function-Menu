@@ -462,15 +462,6 @@ uninstall_nginx() {
 		green "删除配置文件和日志文件..."
 		rm -rf /etc/nginx
 		rm -rf /var/log/nginx
-		rm -rf /var/www/html
-		# 删除 Nginx 相关的用户和组
-		if id -u www-data >/dev/null 2>&1; then
-			green "删除Nginx用户和组..."
-			deluser www-data
-			delgroup www-data
-		fi
-		green "删除所有残留的 Nginx 文件..."
-		find / -name '*nginx*' -exec rm -rf {} + 2>/dev/null
 		read -r -p "$(blue "Nginx 已成功卸载并删除所有相关文件，按回车键返回主菜单...")"
 	else
 		read -r -p "$(blue "Nginx 未安装，按回车键返回主菜单...")"
