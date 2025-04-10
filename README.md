@@ -23,7 +23,7 @@
 * View or edit cron jobs
   
 ```shell
-bash <(curl -Ls https://raw.githubusercontent.com/scattlights/Function-Menu/main/function_menus.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/scattlights/FunctionMenu/main/function_menus.sh)
 ```
 
 
